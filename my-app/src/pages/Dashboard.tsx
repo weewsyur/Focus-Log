@@ -9,7 +9,8 @@ import { useAuth } from '../hooks/useAuth';
 import { useTimer } from '../hooks/TimerContext';
 import { useHabits } from '../hooks/useHabits';
 import { useAnalytics } from '../hooks/useAnalytics';
-import { SUBJECTS } from '../lib/utils';
+import { SessionPicker } from '../components/focus/SessionPicker';
+import { buildSuggestions } from '../lib/utils';
 
 export function Dashboard() {
   const { profile } = useAuth();
@@ -19,6 +20,7 @@ export function Dashboard() {
   const hour = new Date().getHours();
   const part = hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening';
   const first = (profile?.displayName ?? '').split(' ')[0];
+  const suggestions = buildSuggestions(habits.habits.map((h) => h.name), stats.recent.map((r) => r.subject));
 
   return (
     <AppLayout active="dashboard" title={`Good ${part}, ${first}`}>
@@ -28,11 +30,8 @@ export function Dashboard() {
             <FocusTimer variant="ring" remainingMs={t.remainingMs} totalMs={t.totalMs} label={t.mode === 'focus' ? 'Focus timer' : 'Break timer'} />
             <div className="flex min-w-[180px] flex-1 flex-col gap-3">
               <h2 className="text-xl font-bold">{t.mode === 'focus' ? 'Ready to focus?' : 'Break time'}</h2>
-              <p className="text-sm text-[#6B7C93]">One session, one subject. Pick it and start.</p>
-              <select value={t.subject} onChange={(e) => t.setSubject(e.target.value)} disabled={t.status !== 'idle'} aria-label="Subject"
-                className="rounded-lg border border-[#E3EAF3] px-3 py-2 text-sm disabled:opacity-60">
-                {SUBJECTS.map((s) => <option key={s}>{s}</option>)}
-              </select>
+              <p className="text-sm text-[#6B7C93]">Name your session or tap one of your habits.</p>
+              <SessionPicker id="dash-session" value={t.subject} onChange={t.setSubject} suggestions={suggestions} disabled={t.status !== 'idle'} />
               <TimerControls status={t.status} mode={t.mode} canReset={t.status !== 'idle' || t.remainingMs !== t.totalMs}
                 onStart={t.start} onPause={t.pause} onReset={t.reset} onSkipBreak={t.skipBreak} />
             </div>
@@ -49,7 +48,7 @@ export function Dashboard() {
         </Card>
       </div>
       <Card className="mt-4">
-        {stats.loading ? <p className="text-sm text-[#6B7C93]">Loading statistics…</p> : stats.error ? <p role="alert" className="text-sm text-red-600">{stats.error}</p> : (
+        {stats.error ? <p role="alert" className="text-sm text-red-600">{stats.error}</p> : (
           <div className="flex flex-wrap gap-6">
             <StatsCard label="Current streak" value={`${stats.streak} days`} />
             <StatsCard label="Focused today" value={`${stats.todayMin} min`} />

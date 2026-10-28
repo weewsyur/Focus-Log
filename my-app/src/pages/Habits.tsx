@@ -3,11 +3,15 @@ import { Card } from '../components/ui/Card';
 import { ProgressBar } from '../components/ui/ProgressBar';
 import { HabitList } from '../components/habits/HabitList';
 import { HabitForm } from '../components/habits/HabitForm';
+import { Button } from '../components/ui/Button';
+import { Modal } from '../components/ui/Modal';
+import { useState } from 'react';
 import { useHabits } from '../hooks/useHabits';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { dateKey, lastNDays } from '../lib/utils';
 
 export function Habits() {
+  const [addOpen, setAddOpen] = useState(false);
   const h = useHabits();
   const stats = useAnalytics(7);
   const title = `Habits · ${new Date().toLocaleDateString('en', { weekday: 'short', day: '2-digit', month: 'short' })}`;
@@ -38,9 +42,16 @@ export function Habits() {
               })}
             </div>
           </Card>
-          <Card title="Add a habit"><HabitForm onAdd={h.addHabit} /></Card>
+          <Card title="Build your routine" action={<Button size="sm" onClick={() => setAddOpen(true)}>Add habit</Button>}>
+            <p className="text-sm text-[#6B7C93]">Add a habit you want to keep up with each day.</p>
+          </Card>
         </div>
       </div>
+      {addOpen && (
+        <Modal title="Add a habit" onClose={() => setAddOpen(false)}>
+          <HabitForm onAdd={h.addHabit} />
+        </Modal>
+      )}
     </AppLayout>
   );
 }

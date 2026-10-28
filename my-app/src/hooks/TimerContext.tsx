@@ -4,7 +4,7 @@ import { useFocusTimer, type TimerCompletion } from './useFocusTimer';
 import { navigate } from './useRoute';
 import { focusSessionService } from '../services/focusSessionService';
 import type { FocusSession } from '../types';
-import { SUBJECTS, errMsg } from '../lib/utils';
+import { DEFAULT_SESSION_NAME, errMsg } from '../lib/utils';
 
 type TimerApi = ReturnType<typeof useFocusTimer>;
 interface TimerContextValue extends TimerApi {
@@ -18,7 +18,7 @@ const TimerContext = createContext<TimerContextValue | null>(null);
 /** Keeps one timer alive across pages and saves finished focus sessions. */
 export function TimerProvider({ children }: { children: ReactNode }) {
   const { user, profile } = useAuth();
-  const [subject, setSubject] = useState(SUBJECTS[0]);
+  const [subject, setSubject] = useState('');
   const [lastSession, setLastSession] = useState<FocusSession | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const subjectRef = useRef(subject);
@@ -26,7 +26,7 @@ export function TimerProvider({ children }: { children: ReactNode }) {
 
   const handleComplete = useCallback((c: TimerCompletion) => {
     if (c.mode !== 'focus' || !user) return;
-    focusSessionService.create(user.id, { subject: subjectRef.current, durationMin: c.durationMin })
+    focusSessionService.create(user.id, { subject: subjectRef.current.trim() || DEFAULT_SESSION_NAME, durationMin: c.durationMin })
       .then((s) => { setLastSession(s); setSaveError(null); })
       .catch((e: unknown) => { setLastSession(null); setSaveError(errMsg(e, 'Could not save this session.')); })
       .finally(() => navigate('complete'));

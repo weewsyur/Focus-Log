@@ -1,4 +1,16 @@
-export const SUBJECTS = ['Math', 'Biology', 'Chemistry', 'Physics', 'English', 'History'];
+export const DEFAULT_SESSION_NAME = 'Focus session';
+
+/** Habit names first, then past session names; trimmed and de-duplicated (case-insensitive). */
+export function buildSuggestions(...lists: string[][]): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const name of lists.flat()) {
+    const clean = name.trim();
+    const key = clean.toLowerCase();
+    if (clean && !seen.has(key)) { seen.add(key); out.push(clean); }
+  }
+  return out;
+}
 
 export function dateKey(d: Date = new Date()): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
