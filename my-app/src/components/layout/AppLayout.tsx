@@ -21,7 +21,7 @@ export function AppLayout({ active, title, actions, children }: AppLayoutProps) 
     finally { setSignOutBusy(false); }
   };
   return (
-    <div className="min-h-screen bg-[#2180DB] font-['Quicksand',system-ui,sans-serif] md:flex">
+    <div className="min-h-screen bg-app-primary font-['Quicksand',system-ui,sans-serif] md:flex">
       <Sidebar active={active === 'complete' ? 'focus' : active} onSignOut={() => { setSignOutError(null); setSignOutOpen(true); }} />
       <div className="min-w-0 flex-1 px-4 pb-8 md:px-6">
         <Header title={title} actions={actions} />
@@ -29,8 +29,8 @@ export function AppLayout({ active, title, actions, children }: AppLayoutProps) 
       </div>
       {signOutOpen && (
         <Modal title="Sign out?" onClose={() => { if (!signOutBusy) setSignOutOpen(false); }}>
-          <p className="text-sm leading-6 text-[#49617D]">Are you sure you want to sign out of Focus Log?</p>
-          {signOutError && <p role="alert" className="mt-3 text-sm text-red-600">{signOutError}</p>}
+          <p className="text-sm leading-6 text-app-slate">Are you sure you want to sign out of Focus Log?</p>
+          {signOutError && <p role="alert" className="mt-3 text-sm text-app-danger">{signOutError}</p>}
           <div className="mt-6 flex justify-end gap-2">
             <Button className="rounded-lg" variant="ghost" disabled={signOutBusy} onClick={() => setSignOutOpen(false)}>Stay signed in</Button>
             <Button className="rounded-lg" variant="danger" disabled={signOutBusy} onClick={() => void handleSignOut()}>

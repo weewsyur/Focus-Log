@@ -30,25 +30,25 @@ export function Dashboard() {
             <FocusTimer variant="ring" remainingMs={t.remainingMs} totalMs={t.totalMs} label={t.mode === 'focus' ? 'Focus timer' : 'Break timer'} />
             <div className="flex min-w-[180px] flex-1 flex-col gap-3">
               <h2 className="text-xl font-bold">{t.mode === 'focus' ? 'Ready to focus?' : 'Break time'}</h2>
-              <p className="text-sm text-[#6B7C93]">Name your session or tap one of your habits.</p>
+              <p className="text-sm text-app-muted">Name your session or tap one of your habits.</p>
               <SessionPicker id="dash-session" value={t.subject} onChange={t.setSubject} suggestions={suggestions} disabled={t.status !== 'idle'} />
               <TimerControls status={t.status} mode={t.mode} canReset={t.status !== 'idle' || t.remainingMs !== t.totalMs}
                 onStart={t.start} onPause={t.pause} onReset={t.reset} onSkipBreak={t.skipBreak} />
             </div>
           </div>
         </Card>
-        <Card className="lg:col-span-2" title="Today's habits" action={<span className="text-sm font-bold text-[#32CC59]">{habits.doneCount}/{habits.total}</span>}>
-          {habits.loading ? <p className="text-sm text-[#6B7C93]">Loading…</p> : (
+        <Card className="lg:col-span-2" title="Today's habits" action={<span className="text-sm font-bold text-app-success">{habits.doneCount}/{habits.total}</span>}>
+          {habits.loading ? <p className="text-sm text-app-muted">Loading…</p> : (
             <>
               <ProgressBar value={habits.progress} label="Habits completed today" />
               <div className="mt-2"><HabitList habits={habits.habits} onToggle={(id) => void habits.toggleHabit(id)} /></div>
             </>
           )}
-          {habits.error && <p role="alert" className="mt-2 text-sm text-red-600">{habits.error}</p>}
+          {habits.error && <p role="alert" className="mt-2 text-sm text-app-danger">{habits.error}</p>}
         </Card>
       </div>
       <Card className="mt-4">
-        {stats.error ? <p role="alert" className="text-sm text-red-600">{stats.error}</p> : (
+        {stats.error ? <p role="alert" className="text-sm text-app-danger">{stats.error}</p> : (
           <div className="flex flex-wrap gap-6">
             <StatsCard label="Current streak" value={`${stats.streak} days`} />
             <StatsCard label="Focused today" value={`${stats.todayMin} min`} />

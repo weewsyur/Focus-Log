@@ -2,6 +2,25 @@
 
 @theme {
   --font-sans: "Quicksand", system-ui, sans-serif;
+
+  --color-app-navy: #0B2F63;
+  --color-app-blue-deep: #1255A8;
+  --color-app-success-dark: #1F9C40;
+  --color-app-primary: #2180DB;
+  --color-app-success: #32CC59;
+  --color-app-slate: #49617D;
+  --color-app-muted: #6B7C93;
+  --color-app-border-strong: #C9D9EA;
+  --color-app-blue-soft: #DCEBFA;
+  --color-app-border: #E3EAF3;
+  --color-app-blue-pale: #EAF3FC;
+  --color-app-surface: #F4F7FA;
+  --color-app-highlight: #FFF1A8;
+  --color-app-white: #FFFFFF;
+  --color-app-black: #000000;
+  --color-app-danger: #DC2626;
+  --color-app-danger-soft: #FEF2F2;
+  --color-app-danger-border: #FCA5A5;
 }
 
 body {

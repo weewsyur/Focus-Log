@@ -10,8 +10,8 @@ export function FocusChart({ data }: { data: DailyPoint[] }) {
         <div key={d.date} className="flex h-full flex-1 flex-col items-center justify-end gap-1 text-[10px]">
           {!dense && d.minutes > 0 && <span>{d.minutes}</span>}
           <div title={`${d.date}: ${d.minutes} min`} style={{ height: `${Math.max(2, (d.minutes / max) * 80)}%` }}
-            className={`w-full rounded-t ${best > 0 && d.minutes === best ? 'bg-[#32CC59]' : 'bg-[#2180DB]'}`} />
-          <span className="min-h-[14px] text-[#6B7C93]">{dense && Number(d.label) % 5 !== 0 ? '' : d.label}</span>
+            className={`w-full rounded-t ${best > 0 && d.minutes === best ? 'bg-app-success' : 'bg-app-primary'}`} />
+          <span className="min-h-[14px] text-app-muted">{dense && Number(d.label) % 5 !== 0 ? '' : d.label}</span>
         </div>
       ))}
     </div>

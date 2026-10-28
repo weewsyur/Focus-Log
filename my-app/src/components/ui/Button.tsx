@@ -4,10 +4,10 @@ type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> { variant?: Variant; size?: 'sm' | 'md' }
 
 const VARIANTS: Record<Variant, string> = {
-  primary: 'bg-[#32CC59] text-white hover:brightness-95',
-  secondary: 'bg-[#2180DB] text-white hover:brightness-95',
-  ghost: 'border border-[#2180DB] bg-white text-[#2180DB] hover:bg-[#EAF3FC]',
-  danger: 'border border-red-300 bg-white text-red-600 hover:bg-red-50',
+  primary: 'bg-app-success text-app-white hover:brightness-95',
+  secondary: 'bg-app-primary text-app-white hover:brightness-95',
+  ghost: 'border border-app-primary bg-app-white text-app-primary hover:bg-app-blue-pale',
+  danger: 'border border-app-danger-border bg-app-white text-app-danger hover:bg-app-danger-soft',
 };
 
 export function Button({ variant = 'primary', size = 'md', className = '', type = 'button', ...rest }: ButtonProps) {

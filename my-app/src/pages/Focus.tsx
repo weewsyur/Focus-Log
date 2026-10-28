@@ -25,7 +25,7 @@ export function Focus() {
           <FocusTimer remainingMs={t.remainingMs} totalMs={t.totalMs} label={label} />
           <TimerControls status={t.status} mode={t.mode} canReset={!idle || t.remainingMs !== t.totalMs}
             onStart={t.start} onPause={t.pause} onReset={t.reset} onSkipBreak={t.skipBreak} />
-          <div className="mt-10 flex justify-around text-xs uppercase tracking-wider text-[#6B7C93]">
+          <div className="mt-10 flex justify-around text-xs uppercase tracking-wider text-app-muted">
             <span>Mean {stats.meanSessionMin} min</span><span>Today {stats.todayMin} min</span><span>Best {stats.bestSessionMin} min</span>
           </div>
         </Card>
@@ -35,13 +35,13 @@ export function Focus() {
             <Stepper label="focus length" value={t.focusMin} min={1} max={180} disabled={!idle} onChange={(v) => t.setDurations(v, t.breakMin)} /></div>
           <div className="mb-5 flex items-center justify-between text-sm font-bold">Break
             <Stepper label="break length" value={t.breakMin} min={1} max={60} disabled={!idle} onChange={(v) => t.setDurations(t.focusMin, v)} /></div>
-          <hr className="border-[#E3EAF3]" />
-          <p className="mt-4 text-xs uppercase tracking-wider text-[#6B7C93]">Sessions today</p>
+          <hr className="border-app-border" />
+          <p className="mt-4 text-xs uppercase tracking-wider text-app-muted">Sessions today</p>
           <p className="text-4xl font-bold">{stats.todayCount}</p>
           <div className="mt-2 flex gap-1" aria-hidden="true">
-            {Array.from({ length: slots }, (_, i) => <span key={i} className={`h-4 w-4 rounded-full ${i < stats.todayCount ? 'bg-[#32CC59]' : 'bg-[#DCEBFA]'}`} />)}
+            {Array.from({ length: slots }, (_, i) => <span key={i} className={`h-4 w-4 rounded-full ${i < stats.todayCount ? 'bg-app-success' : 'bg-app-blue-soft'}`} />)}
           </div>
-          <p className="mt-4 text-xs text-[#6B7C93]">Closing this tab mid-session discards it. Only finished sessions are saved.</p>
+          <p className="mt-4 text-xs text-app-muted">Closing this tab mid-session discards it. Only finished sessions are saved.</p>
         </Card>
       </div>
     </AppLayout>

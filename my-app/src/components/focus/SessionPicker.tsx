@@ -10,7 +10,7 @@ interface SessionPickerProps {
 export function SessionPicker({ value, onChange, suggestions, disabled, id = 'session-name' }: SessionPickerProps) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-xs uppercase tracking-wider text-[#6B7C93]">Session</label>
+      <label htmlFor={id} className="text-xs uppercase tracking-wider text-app-muted">Session</label>
       <input
         id={id}
         value={value}
@@ -18,7 +18,7 @@ export function SessionPicker({ value, onChange, suggestions, disabled, id = 'se
         disabled={disabled}
         onChange={(e) => onChange(e.target.value)}
         placeholder="What are you working on?"
-        className="w-full rounded-lg border border-[#E3EAF3] px-3 py-2 text-sm disabled:opacity-60"
+        className="w-full rounded-lg border border-app-border px-3 py-2 text-sm disabled:opacity-60"
       />
       {suggestions.length > 0 && (
         <div className="flex flex-wrap gap-1.5" role="group" aria-label="Suggestions from your habits and past sessions">
@@ -30,7 +30,7 @@ export function SessionPicker({ value, onChange, suggestions, disabled, id = 'se
               aria-pressed={s === value}
               onClick={() => onChange(s)}
               className={`max-w-full truncate rounded-full border px-3 py-1 text-xs disabled:opacity-60 ${
-                s === value ? 'border-[#2180DB] bg-[#2180DB] text-white' : 'border-[#E3EAF3] bg-white text-[#0B2F63] hover:bg-[#EAF3FC]'
+                s === value ? 'border-app-primary bg-app-primary text-app-white' : 'border-app-border bg-app-white text-app-navy hover:bg-app-blue-pale'
               }`}
             >
               {s}

@@ -22,10 +22,10 @@ export function Login() {
     } catch (err) { setError(errMsg(err, 'Could not sign in.')); }
     finally { setBusy(false); }
   };
-  const field = 'rounded-lg border border-[#E3EAF3] px-3 py-2.5 text-sm';
+  const field = 'rounded-lg border border-app-border px-3 py-2.5 text-sm';
   return (
-    <div className="grid min-h-screen font-['Quicksand',system-ui,sans-serif] text-[#0B2F63] md:grid-cols-2">
-      <div className="flex flex-col justify-between gap-10 bg-[#2180DB] p-8 text-white md:p-14">
+    <div className="grid min-h-screen font-['Quicksand',system-ui,sans-serif] text-app-navy md:grid-cols-2">
+      <div className="flex flex-col justify-between gap-10 bg-app-primary p-8 text-app-white md:p-14">
         <div className="flex items-center gap-2 font-bold">
           <img src="/logo.png" alt="" className="h-10 w-10 rounded-xl" />
           <span>Focus Log</span>
@@ -36,19 +36,19 @@ export function Login() {
         </div>
         <p className="text-sm opacity-90">25-minute sessions logged. Habits checked. Streak kept.</p>
       </div>
-      <div className="flex items-center justify-center bg-white p-8">
+      <div className="flex items-center justify-center bg-app-white p-8">
         <form onSubmit={(e) => void submit(e)} className="flex w-full max-w-sm flex-col gap-3">
           <h2 className="text-2xl font-bold">{signup ? 'Create account' : 'Welcome back'}</h2>
-          <p className="text-sm text-[#6B7C93]">{signup ? 'Start your streak today' : 'Sign in to pick up your streak'}</p>
+          <p className="text-sm text-app-muted">{signup ? 'Start your streak today' : 'Sign in to pick up your streak'}</p>
           {signup && <input className={field} placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required autoComplete="name" />}
           <input className={field} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
           <input className={field} type="password" placeholder="Password (min 6 characters)" minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} required
             autoComplete={signup ? 'new-password' : 'current-password'} />
-          <p role="alert" className="min-h-5 text-sm text-red-600">{error ?? authError}</p>
+          <p role="alert" className="min-h-5 text-sm text-app-danger">{error ?? authError}</p>
           <Button type="submit" variant="secondary" disabled={busy}>{busy ? 'Please wait…' : signup ? 'Sign up' : 'Sign in'}</Button>
           <p className="text-center text-sm">
             {signup ? 'Have an account? ' : 'New here? '}
-            <button type="button" className="text-[#2180DB]" onClick={() => { setSignup(!signup); setError(null); }}>{signup ? 'Sign in' : 'Create an account'}</button>
+            <button type="button" className="text-app-primary" onClick={() => { setSignup(!signup); setError(null); }}>{signup ? 'Sign in' : 'Create an account'}</button>
           </p>
         </form>
       </div>

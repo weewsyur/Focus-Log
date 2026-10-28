@@ -22,15 +22,15 @@ export function Modal({ title, onClose, children }: ModalProps) {
       ref={dialogRef}
       aria-labelledby={titleId}
       onCancel={(event) => { event.preventDefault(); onClose(); }}
-      className="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl border border-[#E3EAF3] bg-white p-0 text-[#0B2F63] shadow-lg shadow-black/10 backdrop:bg-[#0B2F63]/40"
+      className="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl border border-app-border bg-app-white p-0 text-app-navy shadow-lg shadow-app-black/10 backdrop:bg-app-navy/40"
     >
-      <div className="flex items-center justify-between gap-4 border-b border-[#E3EAF3] px-5 py-4">
+      <div className="flex items-center justify-between gap-4 border-b border-app-border px-5 py-4">
         <h2 id={titleId} className="text-base font-bold">{title}</h2>
         <button
           type="button"
           onClick={onClose}
           aria-label="Close dialog"
-          className="grid h-8 w-8 shrink-0 place-items-center rounded-md text-[#6B7C93] hover:bg-[#F4F7FA] hover:text-[#0B2F63]"
+          className="grid h-8 w-8 shrink-0 place-items-center rounded-md text-app-muted hover:bg-app-surface hover:text-app-navy"
         >
           <span aria-hidden="true">×</span>
         </button>

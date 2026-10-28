@@ -18,8 +18,8 @@ export function Habits() {
   return (
     <AppLayout active="habits" title={title}>
       <div className="grid gap-4 lg:grid-cols-3">
-        <Card className="lg:col-span-2" title="Today" action={<span className="text-sm font-bold text-[#32CC59]">{h.doneCount}/{h.total} done</span>}>
-          {h.loading ? <p className="text-sm text-[#6B7C93]">Loading…</p> : (
+        <Card className="lg:col-span-2" title="Today" action={<span className="text-sm font-bold text-app-success">{h.doneCount}/{h.total} done</span>}>
+          {h.loading ? <p className="text-sm text-app-muted">Loading…</p> : (
             <>
               <ProgressBar value={h.progress} label="Habits completed today" />
               <div className="mt-2">
@@ -28,22 +28,22 @@ export function Habits() {
               </div>
             </>
           )}
-          {h.error && <p role="alert" className="mt-2 text-sm text-red-600">{h.error}</p>}
+          {h.error && <p role="alert" className="mt-2 text-sm text-app-danger">{h.error}</p>}
         </Card>
         <div className="flex flex-col gap-4">
           <Card>
-            <p className="text-[11px] uppercase tracking-wider text-[#6B7C93]">Current streak</p>
+            <p className="text-[11px] uppercase tracking-wider text-app-muted">Current streak</p>
             <p className="text-6xl font-bold">{stats.streak}</p>
-            <p className="text-xs text-[#6B7C93]">days in a row · best {stats.bestStreak}</p>
+            <p className="text-xs text-app-muted">days in a row · best {stats.bestStreak}</p>
             <div className="mt-3 flex gap-1">
               {lastNDays(7).map((d) => {
                 const on = stats.activeDates.has(dateKey(d));
-                return <span key={dateKey(d)} title={dateKey(d)} className={`grid h-6 w-6 place-items-center rounded-full text-[10px] font-bold ${on ? 'bg-[#32CC59] text-white' : 'bg-[#DCEBFA]'}`}>{'SMTWTFS'[d.getDay()]}</span>;
+                return <span key={dateKey(d)} title={dateKey(d)} className={`grid h-6 w-6 place-items-center rounded-full text-[10px] font-bold ${on ? 'bg-app-success text-app-white' : 'bg-app-blue-soft'}`}>{'SMTWTFS'[d.getDay()]}</span>;
               })}
             </div>
           </Card>
           <Card title="Build your routine" action={<Button size="sm" onClick={() => setAddOpen(true)}>Add habit</Button>}>
-            <p className="text-sm text-[#6B7C93]">Add a habit you want to keep up with each day.</p>
+            <p className="text-sm text-app-muted">Add a habit you want to keep up with each day.</p>
           </Card>
         </div>
       </div>

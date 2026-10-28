@@ -23,7 +23,7 @@ function Screens() {
 
 function Gate() {
   const { user, profile, loading } = useAuth();
-  if (loading) return <div className="grid min-h-screen place-items-center bg-[#2180DB] text-white">Loading…</div>;
+  if (loading) return <div className="grid min-h-screen place-items-center bg-app-primary text-app-white">Loading…</div>;
   if (!user || !profile) return <Login />;
   return <TimerProvider><Screens /></TimerProvider>;
 }

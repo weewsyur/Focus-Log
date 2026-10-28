@@ -34,8 +34,8 @@ export function LoginClock() {
   return (
     <div className="relative h-48 w-48 shrink-0 md:h-64 md:w-64" aria-hidden="true">
       <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
-        <circle cx="60" cy="60" r={RADIUS} fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="8" />
-        <circle cx="60" cy="60" r={RADIUS} fill="none" stroke="#32CC59" strokeWidth="8" strokeLinecap="round"
+        <circle cx="60" cy="60" r={RADIUS} fill="none" stroke="var(--color-app-white)" strokeOpacity="0.25" strokeWidth="8" />
+        <circle cx="60" cy="60" r={RADIUS} fill="none" stroke="var(--color-app-success)" strokeWidth="8" strokeLinecap="round"
           strokeDasharray={CIRCUMFERENCE} strokeDashoffset={CIRCUMFERENCE * (1 - seconds / 60)} className={smooth} />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
