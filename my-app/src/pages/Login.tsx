@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from '../components/ui/Button';
+import { LoginClock } from '../components/focus/LoginTimer';
 import { errMsg } from '../lib/utils';
 
 export function Login() {
@@ -24,9 +25,15 @@ export function Login() {
   const field = 'rounded-lg border border-[#E3EAF3] px-3 py-2.5 text-sm';
   return (
     <div className="grid min-h-screen font-['Quicksand',system-ui,sans-serif] text-[#0B2F63] md:grid-cols-2">
-      <div className="flex flex-col justify-center gap-4 bg-[#2180DB] p-8 text-white md:p-14">
-        <div className="flex items-center gap-2 font-bold"><span className="h-4 w-4 rounded-full border-[3px] border-white border-t-[#32CC59]" />Focus Log</div>
-        <h2 className="max-w-sm text-4xl font-bold leading-tight">Hours of studying, minus the hours of scrolling.</h2>
+      <div className="flex flex-col justify-between gap-10 bg-[#2180DB] p-8 text-white md:p-14">
+        <div className="flex items-center gap-2 font-bold">
+          <img src="/logo.png" alt="" className="h-10 w-10 rounded-xl" />
+          <span>Focus Log</span>
+        </div>
+        <div className="flex flex-wrap items-center gap-8">
+          <LoginClock />
+          <h2 className="max-w-xs text-4xl font-bold leading-tight md:text-5xl">Hours of studying, minus the hours of scrolling.</h2>
+        </div>
         <p className="text-sm opacity-90">25-minute sessions logged. Habits checked. Streak kept.</p>
       </div>
       <div className="flex items-center justify-center bg-white p-8">

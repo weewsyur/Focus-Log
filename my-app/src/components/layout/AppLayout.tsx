@@ -32,8 +32,8 @@ export function AppLayout({ active, title, actions, children }: AppLayoutProps) 
           <p className="text-sm leading-6 text-[#49617D]">Are you sure you want to sign out of Focus Log?</p>
           {signOutError && <p role="alert" className="mt-3 text-sm text-red-600">{signOutError}</p>}
           <div className="mt-6 flex justify-end gap-2">
-            <Button variant="ghost" disabled={signOutBusy} onClick={() => setSignOutOpen(false)}>Stay signed in</Button>
-            <Button variant="danger" disabled={signOutBusy} onClick={() => void handleSignOut()}>
+            <Button className="rounded-lg" variant="ghost" disabled={signOutBusy} onClick={() => setSignOutOpen(false)}>Stay signed in</Button>
+            <Button className="rounded-lg" variant="danger" disabled={signOutBusy} onClick={() => void handleSignOut()}>
               {signOutBusy ? 'Signing out…' : 'Sign out'}
             </Button>
           </div>

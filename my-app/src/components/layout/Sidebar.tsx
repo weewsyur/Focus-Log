@@ -11,7 +11,8 @@ export function Sidebar({ active, onSignOut }: { active: Page; onSignOut: () => 
   return (
     <aside className="flex flex-wrap items-center gap-1 bg-[#1255A8] p-3 text-white md:min-h-screen md:w-52 md:flex-col md:items-stretch md:p-4">
       <div className="mr-2 flex items-center gap-2 font-bold md:mb-5">
-        <span className="h-4 w-4 rounded-full border-[3px] border-white border-t-[#32CC59]" />Focus Log
+        <img src="/logo.png" alt="" className="h-8 w-8 rounded-lg" />
+        <span>Focus Log</span>
       </div>
       <nav className="flex flex-wrap gap-1 md:flex-col" aria-label="Main">
         {ITEMS.map(({ page, label }) => (
