@@ -25,6 +25,18 @@ export function formatMinutes(min: number): string {
 export function initials(name: string): string {
   return name.split(/\s+/).filter(Boolean).map((w) => w[0]).join('').slice(0, 2).toUpperCase() || '?';
 }
+export function formatDisplayName(names: {
+  firstName?: string | null;
+  middleName?: string | null;
+  lastName?: string | null;
+  suffix?: string | null;
+}, fallback = ''): string {
+  const name = [names.firstName, names.middleName, names.lastName, names.suffix]
+    .map((part) => part?.trim())
+    .filter((part): part is string => Boolean(part))
+    .join(' ');
+  return name || fallback;
+}
 export function lastNDays(n: number): Date[] {
   return Array.from({ length: n }, (_, i) => {
     const d = new Date();
@@ -55,7 +67,8 @@ export function readLocal<T>(key: string, fallback: T): T {
   try { const raw = localStorage.getItem(key); return raw ? (JSON.parse(raw) as T) : fallback; } catch { return fallback; }
 }
 export function writeLocal(key: string, value: unknown): void {
-  try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* storage unavailable */ }
+  try { localStorage.setItem(key, JSON.stringify(value)); }
+  catch (e) { throw new Error('Could not save data in this browser.', { cause: e }); }
 }
 export const newId = (): string => crypto.randomUUID();
 export const errMsg = (e: unknown, fallback = 'Something went wrong'): string => (e instanceof Error ? e.message : fallback);

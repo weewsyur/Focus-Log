@@ -23,6 +23,7 @@ export const focusSessionService = {
         .insert({ user_id: userId, subject: s.subject, duration_min: s.durationMin })
         .select('id,subject,duration_min,completed_at').single();
       if (error) throw new Error(error.message);
+      if (!data) throw new Error('The saved session could not be confirmed by Supabase.');
       return toSession(data as SessionRow);
     }
     const session: FocusSession = { id: newId(), subject: s.subject, durationMin: s.durationMin, completedAt: new Date().toISOString() };

@@ -3,9 +3,11 @@ import { useAuth } from './useAuth';
 import { habitService } from '../services/habitService';
 import type { Habit, HabitLog, HabitWithStatus } from '../types';
 import { computeStreak, dateKey, errMsg } from '../lib/utils';
+import { useToast } from './ToastContext';
 
 export function useHabits() {
   const { user } = useAuth();
+  const { notify } = useToast();
   const userId = user?.id;
   const [habits, setHabits] = useState<Habit[]>([]);
   const [logs, setLogs] = useState<HabitLog[]>([]);
@@ -23,26 +25,45 @@ export function useHabits() {
   useEffect(() => { void load(); }, [load]);
 
   const addHabit = useCallback(async (name: string) => {
-    if (!userId) return;
-    try { const h = await habitService.create(userId, name); setHabits((p) => [...p, h]); setError(null); }
-    catch (e) { setError(errMsg(e)); }
-  }, [userId]);
+    if (!userId) throw new Error('You must be signed in to add a habit.');
+    try {
+      const h = await habitService.create(userId, name);
+      setHabits((p) => [...p, h]); setError(null);
+      notify('success', 'Habit added.');
+    } catch (e) {
+      const message = errMsg(e);
+      setError(message); notify('error', message);
+      throw e;
+    }
+  }, [userId, notify]);
 
   const renameHabit = useCallback(async (id: string, name: string) => {
-    if (!userId) return;
-    try { await habitService.rename(userId, id, name); setHabits((p) => p.map((h) => (h.id === id ? { ...h, name } : h))); setError(null); }
-    catch (e) { setError(errMsg(e)); }
-  }, [userId]);
+    if (!userId) throw new Error('You must be signed in to update a habit.');
+    try {
+      await habitService.rename(userId, id, name);
+      setHabits((p) => p.map((h) => (h.id === id ? { ...h, name } : h))); setError(null);
+      notify('success', 'Habit updated.');
+    } catch (e) {
+      const message = errMsg(e);
+      setError(message); notify('error', message);
+      throw e;
+    }
+  }, [userId, notify]);
 
   const deleteHabit = useCallback(async (id: string) => {
-    if (!userId) return;
+    if (!userId) throw new Error('You must be signed in to delete a habit.');
     try {
       await habitService.remove(userId, id);
       setHabits((p) => p.filter((h) => h.id !== id));
       setLogs((p) => p.filter((l) => l.habitId !== id));
       setError(null);
-    } catch (e) { setError(errMsg(e)); }
-  }, [userId]);
+      notify('success', 'Habit deleted.');
+    } catch (e) {
+      const message = errMsg(e);
+      setError(message); notify('error', message);
+      throw e;
+    }
+  }, [userId, notify]);
 
   const toggleHabit = useCallback(async (id: string) => {
     if (!userId) return;
@@ -54,8 +75,8 @@ export function useHabits() {
     });
     apply(!wasDone); // optimistic
     try { await habitService.setDone(userId, id, date, !wasDone); setError(null); }
-    catch (e) { apply(wasDone); setError(errMsg(e)); }
-  }, [userId, logs]);
+    catch (e) { apply(wasDone); setError(errMsg(e)); notify('error', errMsg(e)); }
+  }, [userId, logs, notify]);
 
   const items: HabitWithStatus[] = useMemo(() => {
     const today = dateKey();

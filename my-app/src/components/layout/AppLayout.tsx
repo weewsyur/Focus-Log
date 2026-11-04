@@ -7,18 +7,27 @@ import { errMsg } from '../../lib/utils';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
 import { LogOut, X } from 'lucide-react';
+import { useToast } from '../../hooks/ToastContext';
 
 interface AppLayoutProps { active: Page; title: string; actions?: ReactNode; children: ReactNode }
 
 export function AppLayout({ active, title, actions, children }: AppLayoutProps) {
   const { signOut } = useAuth();
+  const { notify } = useToast();
   const [signOutOpen, setSignOutOpen] = useState(false);
   const [signOutError, setSignOutError] = useState<string | null>(null);
   const [signOutBusy, setSignOutBusy] = useState(false);
   const handleSignOut = async () => {
     setSignOutBusy(true);
-    try { await signOut(); setSignOutError(null); setSignOutOpen(false); }
-    catch (e) { setSignOutError(errMsg(e, 'Could not sign out.')); }
+    try {
+      await signOut();
+      notify('logout', 'You have been signed out.');
+      setSignOutError(null); setSignOutOpen(false);
+    }
+    catch (e) {
+      const message = errMsg(e, 'Could not sign out.');
+      setSignOutError(message); notify('error', message);
+    }
     finally { setSignOutBusy(false); }
   };
   return (

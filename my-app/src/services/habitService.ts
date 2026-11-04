@@ -22,6 +22,7 @@ export const habitService = {
     if (supabase) {
       const { data, error } = await supabase.from('habits').insert({ user_id: userId, name }).select('id,name,created_at').single();
       if (error) throw new Error(error.message);
+      if (!data) throw new Error('The saved habit could not be confirmed by Supabase.');
       return toHabit(data as HabitRow);
     }
     const h: Habit = { id: newId(), name, createdAt: new Date().toISOString() };
@@ -30,16 +31,18 @@ export const habitService = {
   },
   async rename(userId: string, id: string, name: string): Promise<void> {
     if (supabase) {
-      const { error } = await supabase.from('habits').update({ name }).eq('id', id).eq('user_id', userId);
+      const { data, error } = await supabase.from('habits').update({ name }).eq('id', id).eq('user_id', userId).select('id').single();
       if (error) throw new Error(error.message);
+      if (!data) throw new Error('The updated habit could not be confirmed by Supabase.');
       return;
     }
     writeLocal(HABITS_KEY, readLocal<Habit[]>(HABITS_KEY, []).map((h) => (h.id === id ? { ...h, name } : h)));
   },
   async remove(userId: string, id: string): Promise<void> {
     if (supabase) {
-      const { error } = await supabase.from('habits').delete().eq('id', id).eq('user_id', userId);
+      const { data, error } = await supabase.from('habits').delete().eq('id', id).eq('user_id', userId).select('id').single();
       if (error) throw new Error(error.message);
+      if (!data) throw new Error('The deleted habit could not be confirmed by Supabase.');
       return;
     }
     writeLocal(HABITS_KEY, readLocal<Habit[]>(HABITS_KEY, []).filter((h) => h.id !== id));

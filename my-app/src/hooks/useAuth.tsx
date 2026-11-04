@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { authService } from '../services/authService';
 import { profileService } from '../services/profileService';
-import type { AuthUser, Profile, ProfilePatch } from '../types';
+import type { AuthUser, Profile, ProfilePatch, RegistrationNames } from '../types';
 import { errMsg } from '../lib/utils';
 
 interface AuthState {
@@ -10,7 +10,7 @@ interface AuthState {
   loading: boolean;
   error: string | null;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (name: string, email: string, password: string) => Promise<void>;
+  signUp: (names: RegistrationNames, email: string, password: string) => Promise<boolean>;
   signOut: () => Promise<void>;
   updateProfile: (patch: ProfilePatch) => Promise<void>;
 }
@@ -48,10 +48,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(u); setProfile(p); setError(null);
   }, []);
   const signIn = useCallback(async (email: string, password: string) => { await establish(await authService.signIn(email, password)); }, [establish]);
-  const signUp = useCallback(async (name: string, email: string, password: string) => { await establish(await authService.signUp(name, email, password)); }, [establish]);
+  const signUp = useCallback(async (names: RegistrationNames, email: string, password: string) => {
+    const result = await authService.signUp(names, email, password);
+    if (result.sessionEstablished) await establish(result.user);
+    return result.sessionEstablished;
+  }, [establish]);
   const signOut = useCallback(async () => { await authService.signOut(); setUser(null); setProfile(null); window.location.hash = ''; }, []);
   const updateProfile = useCallback(async (patch: ProfilePatch) => {
-    if (user) setProfile(await profileService.update(user, patch));
+    if (!user) throw new Error('You must be signed in to update your profile.');
+    setProfile(await profileService.update(user, patch));
   }, [user]);
 
   const value = useMemo(() => ({ user, profile, loading, error, signIn, signUp, signOut, updateProfile }),

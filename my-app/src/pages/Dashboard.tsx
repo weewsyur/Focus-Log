@@ -20,7 +20,7 @@ export function Dashboard() {
   const stats = useAnalytics(7);
   const hour = new Date().getHours();
   const part = hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening';
-  const first = (profile?.displayName ?? '').split(' ')[0];
+  const first = profile?.firstName || (profile?.displayName ?? '').split(' ')[0];
   const suggestions = buildSuggestions(habits.habits.map((h) => h.name), stats.recent.map((r) => r.subject));
 
   return (

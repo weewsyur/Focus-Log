@@ -13,6 +13,7 @@ import { CalendarDays, Flame, Plus, Repeat } from 'lucide-react';
 
 export function Habits() {
   const [addOpen, setAddOpen] = useState(false);
+  const [addBusy, setAddBusy] = useState(false);
   const h = useHabits();
   const stats = useAnalytics(7);
   const title = `Habits · ${new Date().toLocaleDateString('en', { weekday: 'short', day: '2-digit', month: 'short' })}`;
@@ -25,7 +26,7 @@ export function Habits() {
               <ProgressBar value={h.progress} label="Habits completed today" />
               <div className="mt-2">
                 <HabitList habits={h.habits} onToggle={(id) => void h.toggleHabit(id)}
-                  onRename={(id, n) => void h.renameHabit(id, n)} onDelete={(id) => void h.deleteHabit(id)} />
+                        onRename={h.renameHabit} onDelete={h.deleteHabit} />
               </div>
             </>
           )}
@@ -49,8 +50,8 @@ export function Habits() {
         </div>
       </div>
       {addOpen && (
-        <Modal title="Add a habit" onClose={() => setAddOpen(false)}>
-          <HabitForm onAdd={h.addHabit} />
+        <Modal title="Add a habit" onClose={() => { if (!addBusy) setAddOpen(false); }}>
+          <HabitForm onAdd={h.addHabit} onAdded={() => setAddOpen(false)} onBusyChange={setAddBusy} />
         </Modal>
       )}
     </AppLayout>

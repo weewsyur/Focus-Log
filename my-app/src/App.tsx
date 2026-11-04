@@ -8,6 +8,7 @@ import { Habits } from './pages/Habits';
 import { Analytics } from './pages/Analytics';
 import { Settings } from './pages/Settings';
 import { SessionComplete } from './pages/SessionComplete';
+import { ToastProvider } from './hooks/ToastContext';
 
 function Screens() {
   const page = useRoute();
@@ -29,5 +30,5 @@ function Gate() {
 }
 
 export default function App() {
-  return <AuthProvider><Gate /></AuthProvider>;
+  return <ToastProvider><AuthProvider><Gate /></AuthProvider></ToastProvider>;
 }
