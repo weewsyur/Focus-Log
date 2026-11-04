@@ -44,9 +44,10 @@ The profile, habit, and session services document the columns they use. Apply
 the SQL migration in `my-app/supabase/migrations` manually before deploying the
 updated app. It adds separate profile name columns and a trigger for new
 registrations; it retains existing `display_name` values for legacy profiles
-and does not rewrite existing user data. A not-valid check constraint preserves
-legacy rows while requiring first and last names for new or updated profile
-rows. Review the migration before running it.
+and does not rewrite existing user data. The check constraint accepts either
+structured first/last names or a legacy display name, while the registration
+trigger requires first and last names for new accounts. Review the migration
+before running it.
 
 Configure Supabase Auth to enforce the same registration password rules as the
 frontend: at least 8 characters, one uppercase letter, one number, and one

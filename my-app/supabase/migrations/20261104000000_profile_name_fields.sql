@@ -5,23 +5,18 @@ ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS middle_name text,
   ADD COLUMN IF NOT EXISTS suffix text;
 
-DO $migration$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1
-    FROM pg_constraint
-    WHERE conname = 'profiles_first_last_name_required'
-      AND conrelid = 'public.profiles'::regclass
-  ) THEN
-    ALTER TABLE public.profiles
-      ADD CONSTRAINT profiles_first_last_name_required
-      CHECK (
-        first_name IS NOT NULL AND btrim(first_name) <> ''
-        AND last_name IS NOT NULL AND btrim(last_name) <> ''
-      ) NOT VALID;
-  END IF;
-END;
-$migration$;
+ALTER TABLE public.profiles
+  DROP CONSTRAINT IF EXISTS profiles_first_last_name_required;
+
+ALTER TABLE public.profiles
+  ADD CONSTRAINT profiles_first_last_name_required
+  CHECK (
+    (
+      first_name IS NOT NULL AND btrim(first_name) <> ''
+      AND last_name IS NOT NULL AND btrim(last_name) <> ''
+    )
+    OR (display_name IS NOT NULL AND btrim(display_name) <> '')
+  ) NOT VALID;
 
 -- New auth users receive a profile row with structured name columns. Existing rows
 -- and their legacy display_name values are left unchanged.
@@ -38,6 +33,10 @@ DECLARE
   v_suffix text := nullif(btrim(NEW.raw_user_meta_data ->> 'suffix'), '');
   v_display_name text := nullif(btrim(NEW.raw_user_meta_data ->> 'display_name'), '');
 BEGIN
+  IF v_first_name IS NULL OR v_last_name IS NULL THEN
+    RAISE EXCEPTION 'First name and last name are required for new profiles';
+  END IF;
+
   INSERT INTO public.profiles (
     id, display_name, first_name, last_name, middle_name, suffix, default_focus_min, default_break_min
   )
