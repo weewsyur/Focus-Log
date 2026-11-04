@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Pencil, Save, Trash2, X } from 'lucide-react';
 import type { HabitWithStatus } from '../../types';
 import { Button } from '../ui/Button';
 import { Modal } from '../ui/Modal';
@@ -30,8 +31,8 @@ export function HabitList({ habits, onToggle, onRename, onDelete }: HabitListPro
             <input type="checkbox" className="h-4 w-4 accent-app-success" checked={h.doneToday} onChange={() => onToggle(h.id)} aria-label={`Mark ${h.name} done`} />
             <span className={`min-w-0 flex-1 truncate ${h.doneToday ? 'text-app-muted line-through' : ''}`}>{h.name}</span>
             <span className="text-[11px] text-app-muted">{h.streak}d streak</span>
-            {onRename && <button type="button" className="text-xs text-app-primary hover:underline" onClick={() => { setDraft(h.name); setEditingId(h.id); }}>Edit</button>}
-            {onDelete && <button type="button" className="text-xs text-app-danger hover:underline" onClick={() => setDeleting(h)}>Delete</button>}
+            {onRename && <button type="button" className="inline-flex items-center gap-1 text-xs text-app-primary hover:underline" onClick={() => { setDraft(h.name); setEditingId(h.id); }}><Pencil size={13} strokeWidth={2} aria-hidden="true" />Edit</button>}
+            {onDelete && <button type="button" className="inline-flex items-center gap-1 text-xs text-app-danger hover:underline" onClick={() => setDeleting(h)}><Trash2 size={13} strokeWidth={2} aria-hidden="true" />Delete</button>}
           </li>
         ))}
       </ul>
@@ -48,8 +49,8 @@ export function HabitList({ habits, onToggle, onRename, onDelete }: HabitListPro
               className="rounded-lg border border-app-border-strong px-3 py-2 text-sm outline-none focus:border-app-primary focus:ring-2 focus:ring-app-primary/20"
             />
             <div className="flex justify-end gap-2">
-              <Button variant="ghost" onClick={() => setEditingId(null)}>Cancel</Button>
-              <Button type="submit" variant="secondary" disabled={!draft.trim()}>Save habit</Button>
+              <Button variant="ghost" icon={<X size={15} strokeWidth={2} aria-hidden="true" />} onClick={() => setEditingId(null)}>Cancel</Button>
+              <Button type="submit" variant="secondary" icon={<Save size={15} strokeWidth={2} aria-hidden="true" />} disabled={!draft.trim()}>Save habit</Button>
             </div>
           </form>
         </Modal>
@@ -60,7 +61,7 @@ export function HabitList({ habits, onToggle, onRename, onDelete }: HabitListPro
             Delete <span className="font-bold text-app-navy">{deleting.name}</span>? Its completion history will also be removed. This can’t be undone.
           </p>
           <div className="mt-6 flex justify-end gap-2">
-            <Button variant="ghost" disabled={deleteBusy} onClick={() => setDeleting(null)}>Cancel</Button>
+            <Button variant="ghost" icon={<X size={15} strokeWidth={2} aria-hidden="true" />} disabled={deleteBusy} onClick={() => setDeleting(null)}>Cancel</Button>
             <Button
               variant="danger"
               disabled={deleteBusy}
@@ -70,7 +71,7 @@ export function HabitList({ habits, onToggle, onRename, onDelete }: HabitListPro
                 finally { setDeleteBusy(false); }
               }}
             >
-              {deleteBusy ? 'Deleting…' : 'Delete habit'}
+              <Trash2 size={15} strokeWidth={2} aria-hidden="true" />{deleteBusy ? 'Deleting…' : 'Delete habit'}
             </Button>
           </div>
         </Modal>

@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react';
+import { X } from 'lucide-react';
 
 interface ModalProps {
   title: string;
@@ -32,7 +33,7 @@ export function Modal({ title, onClose, children }: ModalProps) {
           aria-label="Close dialog"
           className="grid h-8 w-8 shrink-0 place-items-center rounded-md text-app-muted hover:bg-app-surface hover:text-app-navy"
         >
-          <span aria-hidden="true">×</span>
+          <X size={16} strokeWidth={2} aria-hidden="true" />
         </button>
       </div>
       <div className="p-5">{children}</div>

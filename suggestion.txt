@@ -1,0 +1,13 @@
+FocusLog Consultation:
+- Do we have frontend validation for passwords? 
+Like 1 capital letter, 1 symbol required, 1 number required, and 8 characters minimum. - Need confirmation modal: Y/N modal on any 'saving..' state
+- Toast.message notification (in-app), like success (on saving a record), error, login, logout
+- Full name should be saved in your backend table as not 'Full Name' 
+1 array but columns should be LastName, FirstName, Middle Name (Optional), Suffix (optional) - Registration page (it should confirm password, eye icon for preview): Good
+- Password: an eye icon to preview the password in the input field: Good
+- Login page error messages could use toast.message
+- Last 7 days, Last 30 days are good but there should be an option for ‘Custom Date Range’ where the user may set the Start Date and End Date
+- Take note of pagination per history
+- Add typing rather than fully relaying on the - and + 
+- There is a setting already in sidebar, no need beside the Profile Icon
+- One good feature would be ‘templates’ like there is an existing preset or custom templates an user could set up

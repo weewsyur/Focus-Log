@@ -1,3 +1,4 @@
+import { CirclePause, Play, RotateCcw, SkipForward } from 'lucide-react';
 import { Button } from '../ui/Button';
 import type { TimerMode, TimerStatus } from '../../types';
 
@@ -10,10 +11,10 @@ export function TimerControls({ status, mode, canReset, onStart, onPause, onRese
   return (
     <div className="flex flex-wrap justify-center gap-2">
       {status === 'running'
-        ? <Button variant="secondary" onClick={onPause}>Pause</Button>
-        : <Button onClick={onStart}>{status === 'paused' ? 'Resume' : mode === 'focus' ? 'Start session' : 'Start break'}</Button>}
-      {canReset && <Button variant="ghost" onClick={onReset}>Reset</Button>}
-      {mode === 'break' && onSkipBreak && <Button variant="ghost" onClick={onSkipBreak}>Skip break</Button>}
+        ? <Button variant="secondary" icon={<CirclePause size={16} strokeWidth={2} aria-hidden="true" />} onClick={onPause}>Pause</Button>
+        : <Button icon={<Play size={16} strokeWidth={2} aria-hidden="true" />} onClick={onStart}>{status === 'paused' ? 'Resume' : mode === 'focus' ? 'Start session' : 'Start break'}</Button>}
+      {canReset && <Button variant="ghost" icon={<RotateCcw size={15} strokeWidth={2} aria-hidden="true" />} onClick={onReset}>Reset</Button>}
+      {mode === 'break' && onSkipBreak && <Button variant="ghost" icon={<SkipForward size={15} strokeWidth={2} aria-hidden="true" />} onClick={onSkipBreak}>Skip break</Button>}
     </div>
   );
 }

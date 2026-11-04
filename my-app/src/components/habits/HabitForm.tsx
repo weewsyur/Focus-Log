@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { Plus } from 'lucide-react';
 import { Button } from '../ui/Button';
 
 export function HabitForm({ onAdd }: { onAdd: (name: string) => Promise<void> }) {
@@ -18,7 +19,7 @@ export function HabitForm({ onAdd }: { onAdd: (name: string) => Promise<void> })
       <label className="text-xs uppercase tracking-wider text-app-muted" htmlFor="habit-name">Habit name</label>
       <input id="habit-name" value={name} maxLength={60} onChange={(e) => setName(e.target.value)} placeholder="Stretch for 5 minutes"
         className="rounded-lg border border-app-border px-3 py-2 text-sm" />
-      <Button type="submit" disabled={busy || !name.trim()}>Add habit</Button>
+      <Button type="submit" icon={<Plus size={16} strokeWidth={2} aria-hidden="true" />} disabled={busy || !name.trim()}>Add habit</Button>
     </form>
   );
 }

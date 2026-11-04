@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useHabits } from '../hooks/useHabits';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { dateKey, lastNDays } from '../lib/utils';
+import { CalendarDays, Flame, Plus, Repeat } from 'lucide-react';
 
 export function Habits() {
   const [addOpen, setAddOpen] = useState(false);
@@ -18,7 +19,7 @@ export function Habits() {
   return (
     <AppLayout active="habits" title={title}>
       <div className="grid gap-4 lg:grid-cols-3">
-        <Card className="lg:col-span-2" title="Today" action={<span className="text-sm font-bold text-app-success">{h.doneCount}/{h.total} done</span>}>
+        <Card className="lg:col-span-2" title="Today" titleIcon={<CalendarDays size={16} strokeWidth={2} aria-hidden="true" />} action={<span className="text-sm font-bold text-app-success">{h.doneCount}/{h.total} done</span>}>
           {h.loading ? <p className="text-sm text-app-muted">Loading…</p> : (
             <>
               <ProgressBar value={h.progress} label="Habits completed today" />
@@ -32,7 +33,7 @@ export function Habits() {
         </Card>
         <div className="flex flex-col gap-4">
           <Card>
-            <p className="text-[11px] uppercase tracking-wider text-app-muted">Current streak</p>
+            <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-app-muted"><Flame size={14} strokeWidth={2} aria-hidden="true" />Current streak</p>
             <p className="text-6xl font-bold">{stats.streak}</p>
             <p className="text-xs text-app-muted">days in a row · best {stats.bestStreak}</p>
             <div className="mt-3 flex gap-1">
@@ -42,7 +43,7 @@ export function Habits() {
               })}
             </div>
           </Card>
-          <Card title="Build your routine" action={<Button size="sm" onClick={() => setAddOpen(true)}>Add habit</Button>}>
+          <Card title="Build your routine" titleIcon={<Repeat size={16} strokeWidth={2} aria-hidden="true" />} action={<Button size="sm" icon={<Plus size={14} strokeWidth={2} aria-hidden="true" />} onClick={() => setAddOpen(true)}>Add habit</Button>}>
             <p className="text-sm text-app-muted">Add a habit you want to keep up with each day.</p>
           </Card>
         </div>

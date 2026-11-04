@@ -6,6 +6,7 @@ import { Sidebar } from './Sidebar';
 import { errMsg } from '../../lib/utils';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
+import { LogOut, X } from 'lucide-react';
 
 interface AppLayoutProps { active: Page; title: string; actions?: ReactNode; children: ReactNode }
 
@@ -21,7 +22,7 @@ export function AppLayout({ active, title, actions, children }: AppLayoutProps) 
     finally { setSignOutBusy(false); }
   };
   return (
-    <div className="min-h-screen bg-app-primary font-['Quicksand',system-ui,sans-serif] md:flex">
+    <div className="min-h-screen bg-app-primary md:flex">
       <Sidebar active={active === 'complete' ? 'focus' : active} onSignOut={() => { setSignOutError(null); setSignOutOpen(true); }} />
       <div className="min-w-0 flex-1 px-4 pb-8 md:px-6">
         <Header title={title} actions={actions} />
@@ -32,8 +33,8 @@ export function AppLayout({ active, title, actions, children }: AppLayoutProps) 
           <p className="text-sm leading-6 text-app-slate">Are you sure you want to sign out of Focus Log?</p>
           {signOutError && <p role="alert" className="mt-3 text-sm text-app-danger">{signOutError}</p>}
           <div className="mt-6 flex justify-end gap-2">
-            <Button className="rounded-lg" variant="ghost" disabled={signOutBusy} onClick={() => setSignOutOpen(false)}>Stay signed in</Button>
-            <Button className="rounded-lg" variant="danger" disabled={signOutBusy} onClick={() => void handleSignOut()}>
+            <Button className="rounded-lg" variant="ghost" icon={<X size={15} strokeWidth={2} aria-hidden="true" />} disabled={signOutBusy} onClick={() => setSignOutOpen(false)}>Stay signed in</Button>
+            <Button className="rounded-lg" variant="danger" icon={<LogOut size={15} strokeWidth={2} aria-hidden="true" />} disabled={signOutBusy} onClick={() => void handleSignOut()}>
               {signOutBusy ? 'Signing out…' : 'Sign out'}
             </Button>
           </div>

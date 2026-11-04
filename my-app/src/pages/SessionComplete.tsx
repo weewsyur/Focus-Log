@@ -6,6 +6,7 @@ import { useHabits } from '../hooks/useHabits';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { navigate } from '../hooks/useRoute';
 import { dateKey } from '../lib/utils';
+import { Award, Coffee, SkipForward, Timer } from 'lucide-react';
 
 export function SessionComplete() {
   const t = useTimer();
@@ -22,7 +23,7 @@ export function SessionComplete() {
       <AppLayout active="complete" title="Session complete">
         <Card className="text-center">
           <p className="mb-4 text-sm text-app-muted">No finished session to show yet.</p>
-          <Button onClick={() => navigate('focus')}>Go to focus timer</Button>
+          <Button icon={<Timer size={16} strokeWidth={2} aria-hidden="true" />} onClick={() => navigate('focus')}>Go to focus timer</Button>
         </Card>
       </AppLayout>
     );
@@ -31,18 +32,18 @@ export function SessionComplete() {
     <AppLayout active="complete" title="Session complete">
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="py-10">
-          {s && !stats.loading && !stats.error && stats.bestSessionMin === s.durationMin && <span className="rounded-full bg-app-highlight px-3 py-1 text-xs">New daily best: {stats.todayMin} minutes</span>}
+          {s && !stats.loading && !stats.error && stats.bestSessionMin === s.durationMin && <span className="inline-flex items-center gap-1.5 rounded-full bg-app-highlight px-3 py-1 text-xs"><Award size={14} strokeWidth={2} aria-hidden="true" />New daily best: {stats.todayMin} minutes</span>}
           <p className="my-5 text-7xl font-bold leading-none tabular-nums">{String(s?.durationMin ?? t.focusMin).padStart(2, '0')}:00</p>
           {t.saveError
             ? <p role="alert" className="mb-4 text-sm text-app-danger">We couldn't save this session: {t.saveError}</p>
             : <p className="mb-5">{s?.subject} session saved. Take {t.breakMin} minutes, then go again.</p>}
           <div className="flex flex-wrap gap-2">
-            <Button onClick={() => { t.startBreak(); navigate('focus'); }}>Start {t.breakMin} min break</Button>
-            <Button variant="ghost" onClick={() => { t.skipBreak(); navigate('focus'); }}>Skip break</Button>
+            <Button icon={<Coffee size={16} strokeWidth={2} aria-hidden="true" />} onClick={() => { t.startBreak(); navigate('focus'); }}>Start {t.breakMin} min break</Button>
+            <Button variant="ghost" icon={<SkipForward size={15} strokeWidth={2} aria-hidden="true" />} onClick={() => { t.skipBreak(); navigate('focus'); }}>Skip break</Button>
           </div>
           {stats.loading ? <p className="mt-4 text-sm text-app-muted">Loading statistics…</p> : stats.error ? <p role="alert" className="mt-4 text-sm text-app-danger">{stats.error}</p> : null}
         </Card>
-        <Card title="Saved to your log">
+        <Card title="Saved to your log" titleIcon={<Award size={16} strokeWidth={2} aria-hidden="true" />}>
           {s ? (
             <>
               {row('Subject', s.subject)}{row('Duration', `${s.durationMin} min`)}{row('Date', dateKey(new Date(s.completedAt)))}

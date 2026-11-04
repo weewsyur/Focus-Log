@@ -11,6 +11,7 @@ import { useHabits } from '../hooks/useHabits';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { SessionPicker } from '../components/focus/SessionPicker';
 import { buildSuggestions } from '../lib/utils';
+import { Activity, Flame, Repeat, Timer } from 'lucide-react';
 
 export function Dashboard() {
   const { profile } = useAuth();
@@ -29,7 +30,7 @@ export function Dashboard() {
           <div className="flex flex-wrap items-center gap-6">
             <FocusTimer variant="ring" remainingMs={t.remainingMs} totalMs={t.totalMs} label={t.mode === 'focus' ? 'Focus timer' : 'Break timer'} />
             <div className="flex min-w-[180px] flex-1 flex-col gap-3">
-              <h2 className="text-xl font-bold">{t.mode === 'focus' ? 'Ready to focus?' : 'Break time'}</h2>
+              <h2 className="flex items-center gap-2 text-xl font-bold"><Timer size={18} strokeWidth={2} aria-hidden="true" />{t.mode === 'focus' ? 'Ready to focus?' : 'Break time'}</h2>
               <p className="text-sm text-app-muted">Name your session or tap one of your habits.</p>
               <SessionPicker id="dash-session" value={t.subject} onChange={t.setSubject} suggestions={suggestions} disabled={t.status !== 'idle'} />
               <TimerControls status={t.status} mode={t.mode} canReset={t.status !== 'idle' || t.remainingMs !== t.totalMs}
@@ -37,7 +38,7 @@ export function Dashboard() {
             </div>
           </div>
         </Card>
-        <Card className="lg:col-span-2" title="Today's habits" action={<span className="text-sm font-bold text-app-success">{habits.doneCount}/{habits.total}</span>}>
+        <Card className="lg:col-span-2" title="Today's habits" titleIcon={<Repeat size={16} strokeWidth={2} aria-hidden="true" />} action={<span className="text-sm font-bold text-app-success">{habits.doneCount}/{habits.total}</span>}>
           {habits.loading ? <p className="text-sm text-app-muted">Loading…</p> : (
             <>
               <ProgressBar value={habits.progress} label="Habits completed today" />
@@ -50,9 +51,9 @@ export function Dashboard() {
       <Card className="mt-4">
         {stats.error ? <p role="alert" className="text-sm text-app-danger">{stats.error}</p> : (
           <div className="flex flex-wrap gap-6">
-            <StatsCard label="Current streak" value={`${stats.streak} days`} />
-            <StatsCard label="Focused today" value={`${stats.todayMin} min`} />
-            <StatsCard label="Sessions today" value={stats.todayCount} />
+            <StatsCard label="Current streak" value={`${stats.streak} days`} icon={<Flame size={14} strokeWidth={2} aria-hidden="true" />} />
+            <StatsCard label="Focused today" value={`${stats.todayMin} min`} icon={<Timer size={14} strokeWidth={2} aria-hidden="true" />} />
+            <StatsCard label="Sessions today" value={stats.todayCount} icon={<Activity size={14} strokeWidth={2} aria-hidden="true" />} />
           </div>
         )}
       </Card>

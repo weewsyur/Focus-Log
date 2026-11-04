@@ -9,6 +9,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useTimer } from '../hooks/TimerContext';
 import { useHabits } from '../hooks/useHabits';
 import { errMsg, initials } from '../lib/utils';
+import { Pencil, Repeat, Save, Timer, X } from 'lucide-react';
 
 export function Settings() {
   const { profile, updateProfile } = useAuth();
@@ -41,15 +42,15 @@ export function Settings() {
           <div><p className="text-xl font-bold">{profile?.displayName}</p><p className="text-xs text-app-muted">{profile?.email}</p></div>
         </div>
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          <Button variant="secondary" onClick={() => { setMsg(null); setEditing(true); }}>Edit profile & timer</Button>
+          <Button variant="secondary" icon={<Pencil size={15} strokeWidth={2} aria-hidden="true" />} onClick={() => { setMsg(null); setEditing(true); }}>Edit profile & timer</Button>
           {msg && <p role="status" className={`text-sm ${msg.ok ? 'text-app-success-dark' : 'text-app-danger'}`}>{msg.text}</p>}
         </div>
       </Card>
       <div className="grid gap-4 md:grid-cols-2">
-        <Card title="Timer defaults">
+        <Card title="Timer defaults" titleIcon={<Timer size={16} strokeWidth={2} aria-hidden="true" />}>
           <p className="text-sm text-app-muted">Focus: {profile?.defaultFocusMin ?? 25} min · Break: {profile?.defaultBreakMin ?? 5} min</p>
         </Card>
-        <Card title="Your habits">
+        <Card title="Your habits" titleIcon={<Repeat size={16} strokeWidth={2} aria-hidden="true" />}>
           {habits.loading ? <p className="text-sm text-app-muted">Loading…</p> : (
             <HabitList habits={habits.habits} onToggle={(id) => void habits.toggleHabit(id)}
               onRename={(id, n) => void habits.renameHabit(id, n)} onDelete={(id) => void habits.deleteHabit(id)} />
@@ -61,14 +62,18 @@ export function Settings() {
         <Modal title="Profile & timer settings" onClose={() => { if (!busy) setEditing(false); }}>
           <form onSubmit={(e) => void save(e)} className="flex flex-col gap-4">
             <label className="flex flex-col gap-1 text-xs uppercase tracking-wider text-app-muted">Display name
-              <input value={name} onChange={(e) => setName(e.target.value)} maxLength={40} className="rounded-lg border border-app-border px-3 py-2 text-sm normal-case tracking-normal text-app-navy" /></label>
+              <span className="relative">
+                <Pencil className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" size={15} strokeWidth={2} aria-hidden="true" />
+                <input value={name} onChange={(e) => setName(e.target.value)} maxLength={40} className="w-full rounded-lg border border-app-border py-2 pl-9 pr-3 text-sm normal-case tracking-normal text-app-navy" />
+              </span>
+            </label>
             <p className="text-sm text-app-muted">New sessions start with these lengths.</p>
             <div className="flex items-center justify-between text-sm font-bold">Default focus <Stepper label="default focus" value={focus} min={1} max={180} onChange={setFocus} /></div>
             <div className="flex items-center justify-between text-sm font-bold">Default break <Stepper label="default break" value={brk} min={1} max={60} onChange={setBrk} /></div>
             {msg && !msg.ok && <p role="alert" className="text-sm text-app-danger">{msg.text}</p>}
             <div className="flex justify-end gap-2">
-              <Button variant="ghost" disabled={busy} onClick={() => setEditing(false)}>Cancel</Button>
-              <Button type="submit" variant="secondary" disabled={busy}>{busy ? 'Saving…' : 'Save changes'}</Button>
+              <Button variant="ghost" icon={<X size={15} strokeWidth={2} aria-hidden="true" />} disabled={busy} onClick={() => setEditing(false)}>Cancel</Button>
+              <Button type="submit" variant="secondary" icon={<Save size={15} strokeWidth={2} aria-hidden="true" />} disabled={busy}>{busy ? 'Saving…' : 'Save changes'}</Button>
             </div>
           </form>
         </Modal>

@@ -5,6 +5,7 @@ import { StatsCard } from '../components/analytics/StatsCard';
 import { FocusChart } from '../components/analytics/FocusChart';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { dateKey, formatMinutes } from '../lib/utils';
+import { Activity, CalendarDays, CheckCircle2, Clock3, Flame, Repeat, Timer } from 'lucide-react';
 
 export function Analytics() {
   const [range, setRange] = useState<7 | 30>(7);
@@ -12,8 +13,8 @@ export function Analytics() {
   const pill = (on: boolean) => `rounded-full px-3 py-1 text-xs ${on ? 'bg-app-white text-app-navy' : 'bg-app-white/20 text-app-white hover:bg-app-white/30'}`;
   const actions = (
     <>
-      <button type="button" className={pill(range === 7)} onClick={() => setRange(7)}>Last 7 days</button>
-      <button type="button" className={pill(range === 30)} onClick={() => setRange(30)}>Last 30 days</button>
+      <button type="button" className={`${pill(range === 7)} inline-flex items-center gap-1.5`} onClick={() => setRange(7)}><CalendarDays size={14} strokeWidth={2} aria-hidden="true" />Last 7 days</button>
+      <button type="button" className={`${pill(range === 30)} inline-flex items-center gap-1.5`} onClick={() => setRange(30)}><CalendarDays size={14} strokeWidth={2} aria-hidden="true" />Last 30 days</button>
     </>
   );
   return (
@@ -22,18 +23,18 @@ export function Analytics() {
         <>
           <Card>
             <div className="flex flex-wrap gap-6">
-              <StatsCard label="Focus time" value={formatMinutes(a.focusMin)} />
-              <StatsCard label="Sessions" value={a.sessionCount} />
-              <StatsCard label="Habits done" value={`${a.habitsDone} / ${a.habitsPossible}`} />
-              <StatsCard label="Completion rate" value={`${a.completionRate}%`} />
-              <StatsCard label="Streak" value={`${a.streak} days`} />
+              <StatsCard label="Focus time" value={formatMinutes(a.focusMin)} icon={<Timer size={14} strokeWidth={2} aria-hidden="true" />} />
+              <StatsCard label="Sessions" value={a.sessionCount} icon={<Activity size={14} strokeWidth={2} aria-hidden="true" />} />
+              <StatsCard label="Habits done" value={`${a.habitsDone} / ${a.habitsPossible}`} icon={<Repeat size={14} strokeWidth={2} aria-hidden="true" />} />
+              <StatsCard label="Completion rate" value={`${a.completionRate}%`} icon={<CheckCircle2 size={14} strokeWidth={2} aria-hidden="true" />} />
+              <StatsCard label="Streak" value={`${a.streak} days`} icon={<Flame size={14} strokeWidth={2} aria-hidden="true" />} />
             </div>
           </Card>
           <div className="mt-4 grid gap-4 lg:grid-cols-3">
-            <Card className="lg:col-span-2" title="Daily focus" action={<span className="text-[11px] text-app-muted">minutes</span>}>
+            <Card className="lg:col-span-2" title="Daily focus" titleIcon={<Clock3 size={16} strokeWidth={2} aria-hidden="true" />} action={<span className="text-[11px] text-app-muted">minutes</span>}>
               {a.focusMin === 0 ? <p className="text-sm text-app-muted">No finished sessions in this range yet.</p> : <FocusChart data={a.daily} />}
             </Card>
-            <Card title="Recent sessions">
+            <Card title="Recent sessions" titleIcon={<Activity size={16} strokeWidth={2} aria-hidden="true" />}>
               {a.recent.length === 0 ? <p className="text-sm text-app-muted">Nothing logged yet.</p> : (
                 <ul>
                   {a.recent.map((s) => (
