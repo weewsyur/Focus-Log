@@ -3,7 +3,7 @@ import { Card } from '../components/ui/Card';
 import { Stepper } from '../components/ui/Stepper';
 import { FocusTimer } from '../components/focus/FocusTimer';
 import { TimerControls } from '../components/focus/TimerControls';
-import { useTimer } from '../hooks/TimerContext';
+import { useTimer } from '../hooks/useTimer';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { SessionPicker } from '../components/focus/SessionPicker';
 import { DEFAULT_SESSION_NAME, buildSuggestions } from '../lib/utils';

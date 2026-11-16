@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuthContext';
 import type { Page } from '../../types';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
@@ -7,7 +7,7 @@ import { errMsg } from '../../lib/utils';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
 import { LogOut, X } from 'lucide-react';
-import { useToast } from '../../hooks/ToastContext';
+import { useToast } from '../../hooks/useToast';
 
 interface AppLayoutProps { active: Page; title: string; actions?: ReactNode; children: ReactNode }
 

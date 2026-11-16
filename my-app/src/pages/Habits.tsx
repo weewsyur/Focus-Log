@@ -5,18 +5,27 @@ import { HabitList } from '../components/habits/HabitList';
 import { HabitForm } from '../components/habits/HabitForm';
 import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHabits } from '../hooks/useHabits';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { dateKey, lastNDays } from '../lib/utils';
 import { CalendarDays, Flame, Plus, Repeat } from 'lucide-react';
 
 export function Habits() {
+  const [currentDate, setCurrentDate] = useState(() => new Date());
   const [addOpen, setAddOpen] = useState(false);
   const [addBusy, setAddBusy] = useState(false);
   const h = useHabits();
   const stats = useAnalytics(7);
-  const title = `Habits · ${new Date().toLocaleDateString('en', { weekday: 'short', day: '2-digit', month: 'short' })}`;
+  const title = `Habits · ${currentDate.toLocaleDateString('en', { weekday: 'short', day: '2-digit', month: 'short' })}`;
+
+  useEffect(() => {
+    const current = new Date();
+    const next = new Date(current);
+    next.setHours(24, 0, 0, 0);
+    const timeout = window.setTimeout(() => setCurrentDate(new Date()), next.getTime() - current.getTime());
+    return () => window.clearTimeout(timeout);
+  }, [currentDate]);
   return (
     <AppLayout active="habits" title={title}>
       <div className="grid gap-4 lg:grid-cols-3">

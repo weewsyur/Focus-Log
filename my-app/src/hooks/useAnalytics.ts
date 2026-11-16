@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useAuth } from './useAuth';
+import { useAuth } from './useAuthContext';
 import { focusSessionService } from '../services/focusSessionService';
 import { habitService } from '../services/habitService';
 import type { DailyPoint, FocusSession, HabitLog } from '../types';

@@ -1,9 +1,13 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useAuth } from './useAuth';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useAuth } from './useAuthContext';
 import { habitService } from '../services/habitService';
 import type { Habit, HabitLog, HabitWithStatus } from '../types';
 import { computeStreak, dateKey, errMsg } from '../lib/utils';
-import { useToast } from './ToastContext';
+import { useToast } from './useToast';
+
+async function fetchHabits(userId: string): Promise<[Habit[], HabitLog[]]> {
+  return Promise.all([habitService.list(userId), habitService.logs(userId)]);
+}
 
 export function useHabits() {
   const { user } = useAuth();
@@ -13,16 +17,48 @@ export function useHabits() {
   const [logs, setLogs] = useState<HabitLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const requestId = useRef(0);
+  const mounted = useRef(false);
+
+  useEffect(() => {
+    mounted.current = true;
+    let active = true;
+    const request = ++requestId.current;
+    const load = async () => {
+      if (!userId) return;
+      try {
+        const [h, l] = await fetchHabits(userId);
+        if (active && request === requestId.current) {
+          setHabits(h); setLogs(l); setError(null);
+        }
+      } catch (e) {
+        if (active && request === requestId.current) setError(errMsg(e));
+      } finally {
+        if (active && request === requestId.current) setLoading(false);
+      }
+    };
+    void load();
+    return () => {
+      active = false;
+      mounted.current = false;
+    };
+  }, [userId]);
 
   const load = useCallback(async () => {
     if (!userId) return;
+    const request = ++requestId.current;
+    setLoading(true);
     try {
-      const [h, l] = await Promise.all([habitService.list(userId), habitService.logs(userId)]);
-      setHabits(h); setLogs(l); setError(null);
-    } catch (e) { setError(errMsg(e)); }
-    finally { setLoading(false); }
+      const [h, l] = await fetchHabits(userId);
+      if (mounted.current && request === requestId.current) {
+        setHabits(h); setLogs(l); setError(null);
+      }
+    } catch (e) {
+      if (mounted.current && request === requestId.current) setError(errMsg(e));
+    } finally {
+      if (mounted.current && request === requestId.current) setLoading(false);
+    }
   }, [userId]);
-  useEffect(() => { void load(); }, [load]);
 
   const addHabit = useCallback(async (name: string) => {
     if (!userId) throw new Error('You must be signed in to add a habit.');

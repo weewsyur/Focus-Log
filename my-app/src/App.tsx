@@ -1,4 +1,5 @@
-import { AuthProvider, useAuth } from './hooks/useAuth';
+import { AuthProvider } from './hooks/useAuth';
+import { useAuth } from './hooks/useAuthContext';
 import { TimerProvider } from './hooks/TimerContext';
 import { useRoute } from './hooks/useRoute';
 import { Login } from './pages/Login';

@@ -1,7 +1,7 @@
 import { useEffect, useState, type ComponentProps, type FormEvent, type ReactNode } from 'react';
 import { CheckCircle2, Circle, Eye, EyeOff, LockKeyhole, LogIn, Mail, UserRound, UserRoundPlus, type LucideIcon } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
-import { useToast } from '../hooks/ToastContext';
+import { useAuth } from '../hooks/useAuthContext';
+import { useToast } from '../hooks/useToast';
 import { Button } from '../components/ui/Button';
 import { LoginClock } from '../components/focus/LoginTimer';
 import { getPasswordRequirements, isPasswordValid } from '../lib/passwordValidation';

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuthContext';
 import { navigate } from '../../hooks/useRoute';
 import { initials } from '../../lib/utils';
 import { Settings } from 'lucide-react';

@@ -1,24 +1,12 @@
-import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
-import { useAuth } from './useAuth';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useAuth } from './useAuthContext';
 import { useFocusTimer, type TimerCompletion } from './useFocusTimer';
 import { navigate } from './useRoute';
 import { focusSessionService } from '../services/focusSessionService';
 import type { FocusSession, NewFocusSession } from '../types';
 import { DEFAULT_SESSION_NAME, errMsg } from '../lib/utils';
-import { useToast } from './ToastContext';
-
-type TimerApi = ReturnType<typeof useFocusTimer>;
-interface TimerContextValue extends TimerApi {
-  subject: string;
-  setSubject: (s: string) => void;
-  lastSession: FocusSession | null;
-  pendingSession: NewFocusSession | null;
-  saveError: string | null;
-  savingSession: boolean;
-  saveSession: () => Promise<void>;
-  discardPendingSession: () => void;
-}
-const TimerContext = createContext<TimerContextValue | null>(null);
+import { useToast } from './useToast';
+import { TimerContext } from './useTimer';
 
 /** Keeps one timer alive across pages and stages completed focus sessions for confirmation. */
 export function TimerProvider({ children }: { children: ReactNode }) {
@@ -78,10 +66,4 @@ export function TimerProvider({ children }: { children: ReactNode }) {
   return <TimerContext.Provider value={{
     ...timer, subject, setSubject, lastSession, pendingSession, saveError, savingSession, saveSession, discardPendingSession,
   }}>{children}</TimerContext.Provider>;
-}
-
-export function useTimer(): TimerContextValue {
-  const ctx = useContext(TimerContext);
-  if (!ctx) throw new Error('useTimer must be used inside TimerProvider');
-  return ctx;
 }

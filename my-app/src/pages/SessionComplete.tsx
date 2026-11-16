@@ -1,7 +1,7 @@
 import { AppLayout } from '../components/layout/AppLayout';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
-import { useTimer } from '../hooks/TimerContext';
+import { useTimer } from '../hooks/useTimer';
 import { useHabits } from '../hooks/useHabits';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { navigate } from '../hooks/useRoute';

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { AppLayout } from '../components/layout/AppLayout';
 import { Card } from '../components/ui/Card';
 import { ProgressBar } from '../components/ui/ProgressBar';
@@ -5,8 +6,8 @@ import { FocusTimer } from '../components/focus/FocusTimer';
 import { TimerControls } from '../components/focus/TimerControls';
 import { HabitList } from '../components/habits/HabitList';
 import { StatsCard } from '../components/analytics/StatsCard';
-import { useAuth } from '../hooks/useAuth';
-import { useTimer } from '../hooks/TimerContext';
+import { useAuth } from '../hooks/useAuthContext';
+import { useTimer } from '../hooks/useTimer';
 import { useHabits } from '../hooks/useHabits';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { SessionPicker } from '../components/focus/SessionPicker';
@@ -14,14 +15,28 @@ import { buildSuggestions } from '../lib/utils';
 import { Activity, Flame, Repeat, Timer } from 'lucide-react';
 
 export function Dashboard() {
+  const [now, setNow] = useState(() => new Date());
   const { profile } = useAuth();
   const t = useTimer();
   const habits = useHabits();
   const stats = useAnalytics(7);
-  const hour = new Date().getHours();
+  const hour = now.getHours();
   const part = hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening';
   const first = profile?.firstName || (profile?.displayName ?? '').split(' ')[0];
   const suggestions = buildSuggestions(habits.habits.map((h) => h.name), stats.recent.map((r) => r.subject));
+
+  useEffect(() => {
+    const current = new Date();
+    const next = new Date(current);
+    if (current.getHours() < 12) next.setHours(12, 0, 0, 0);
+    else if (current.getHours() < 18) next.setHours(18, 0, 0, 0);
+    else {
+      next.setDate(next.getDate() + 1);
+      next.setHours(12, 0, 0, 0);
+    }
+    const timeout = window.setTimeout(() => setNow(new Date()), next.getTime() - current.getTime());
+    return () => window.clearTimeout(timeout);
+  }, [now]);
 
   return (
     <AppLayout active="dashboard" title={`Good ${part}, ${first}`}>

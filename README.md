@@ -32,22 +32,27 @@ npm run preview
 
 ## Supabase setup
 
-Copy `.env.example` to `.env` and add your project URL and public anon key:
+Add your project URL and public key to `my-app/.env`:
 
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+VITE_SUPABASE_PUBLISHABLE_KEY=your-supabase-publishable-or-anon-key
 ```
+
+The app also accepts `VITE_SUPABASE_ANON_KEY` for older setups. In Vercel, add
+`VITE_SUPABASE_URL` and either public-key variable under **Project Settings →
+Environment Variables**, enable them for the environments you deploy, then
+redeploy. Do not use a Supabase service-role key in the frontend.
 
 The app expects `profiles`, `habits`, `habit_logs`, and `focus_sessions` tables.
 The profile, habit, and session services document the columns they use. Apply
-the SQL migration in `my-app/supabase/migrations` manually before deploying the
-updated app. It adds separate profile name columns and a trigger for new
-registrations; it retains existing `display_name` values for legacy profiles
-and does not rewrite existing user data. The check constraint accepts either
-structured first/last names or a legacy display name, while the registration
-trigger requires first and last names for new accounts. Review the migration
-before running it.
+the SQL migrations in `my-app/supabase/migrations` in timestamp order before
+deploying. The app-table repair migration creates missing tables, backfills
+missing profiles from Auth metadata without overwriting existing profile data,
+and applies per-user access policies. The profile-name migration adds separate
+name columns and a registration trigger; its check accepts structured
+first/last names or a legacy display name. Review the migrations before
+running them.
 
 Configure Supabase Auth to enforce the same registration password rules as the
 frontend: at least 8 characters, one uppercase letter, one number, and one
@@ -57,9 +62,9 @@ signed-in user before connecting a production project.
 Only use the public anon key in this frontend. Never add a Supabase
 service-role key to a `VITE_` variable or commit it to the repository.
 
-If either Supabase variable is missing, the app uses local browser storage
-instead. That mode is useful for a quick preview, but it does not provide real
-authentication or sync data between browsers.
+If the Supabase URL or both public-key variables are missing, the app uses
+local browser storage instead. That mode is useful for a quick preview, but it
+does not provide real authentication or sync data between browsers.
 
 ## Handy commands
 
