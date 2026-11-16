@@ -22,7 +22,7 @@ export function Focus() {
     <AppLayout active="focus" title="Focus">
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="py-10 lg:col-span-2">
-          <FocusTimer remainingMs={t.remainingMs} totalMs={t.totalMs} label={label} />
+          <FocusTimer remainingMs={t.remainingMs} totalMs={t.totalMs} label={label} running={t.status === 'running'} />
           <TimerControls status={t.status} mode={t.mode} canReset={!idle || t.remainingMs !== t.totalMs}
             onStart={t.start} onPause={t.pause} onReset={t.reset} onSkipBreak={t.skipBreak} />
           <div className="mt-10 flex justify-around text-xs uppercase tracking-wider text-app-muted">

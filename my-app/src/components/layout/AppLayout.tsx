@@ -31,7 +31,7 @@ export function AppLayout({ active, title, actions, children }: AppLayoutProps) 
     finally { setSignOutBusy(false); }
   };
   return (
-    <div className="min-h-screen bg-app-primary md:flex">
+    <div className="space-shell min-h-screen md:flex">
       <Sidebar active={active === 'complete' ? 'focus' : active} onSignOut={() => { setSignOutError(null); setSignOutOpen(true); }} />
       <div className="min-w-0 flex-1 px-4 pb-8 md:px-6">
         <Header title={title} actions={actions} />

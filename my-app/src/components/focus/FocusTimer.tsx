@@ -1,25 +1,26 @@
 import { formatClock } from '../../lib/utils';
+import { TimeFlowNumber } from '../ui/TimeFlowNumber';
 
-interface FocusTimerProps { remainingMs: number; totalMs: number; variant?: 'large' | 'ring'; label?: string }
+interface FocusTimerProps { remainingMs: number; totalMs: number; variant?: 'large' | 'ring'; label?: string; running?: boolean }
 
-export function FocusTimer({ remainingMs, totalMs, variant = 'large', label }: FocusTimerProps) {
+export function FocusTimer({ remainingMs, totalMs, variant = 'large', label, running = false }: FocusTimerProps) {
   const progress = totalMs > 0 ? remainingMs / totalMs : 0;
   if (variant === 'ring') {
     return (
-      <div className="relative h-40 w-40 shrink-0" role="timer" aria-label={label}>
+      <div className={`gravity-ring relative h-40 w-40 shrink-0 ${running ? 'is-running' : ''}`} role="timer" aria-label={label}>
         <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
           <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-app-blue-soft)" strokeWidth="9" />
           <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-app-success)" strokeWidth="9" strokeLinecap="round"
             strokeDasharray={2 * Math.PI * 52} strokeDashoffset={2 * Math.PI * 52 * (1 - progress)} />
         </svg>
-        <span className="absolute inset-0 grid place-items-center text-3xl font-bold">{formatClock(remainingMs)}</span>
+        <span className="absolute inset-0 grid place-items-center text-3xl font-bold"><TimeFlowNumber value={formatClock(remainingMs)} /></span>
       </div>
     );
   }
   return (
-    <div className="text-center" role="timer" aria-label={label}>
+    <div className={`focus-clock text-center ${running ? 'is-running' : ''}`} role="timer" aria-label={label}>
       {label && <p className="text-xs uppercase tracking-wider text-app-muted">{label}</p>}
-      <p className="my-6 text-[clamp(64px,13vw,128px)] font-bold leading-none tabular-nums">{formatClock(remainingMs)}</p>
+      <p className="my-6 text-[clamp(64px,13vw,128px)] font-bold leading-none tabular-nums"><TimeFlowNumber value={formatClock(remainingMs)} /></p>
     </div>
   );
 }

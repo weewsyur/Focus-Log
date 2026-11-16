@@ -43,7 +43,7 @@ export function Dashboard() {
       <div className="grid gap-4 lg:grid-cols-5">
         <Card className="lg:col-span-3">
           <div className="flex flex-wrap items-center gap-6">
-            <FocusTimer variant="ring" remainingMs={t.remainingMs} totalMs={t.totalMs} label={t.mode === 'focus' ? 'Focus timer' : 'Break timer'} />
+            <FocusTimer variant="ring" remainingMs={t.remainingMs} totalMs={t.totalMs} label={t.mode === 'focus' ? 'Focus timer' : 'Break timer'} running={t.status === 'running'} />
             <div className="flex min-w-[180px] flex-1 flex-col gap-3">
               <h2 className="flex items-center gap-2 text-xl font-bold"><Timer size={18} strokeWidth={2} aria-hidden="true" />{t.mode === 'focus' ? 'Ready to focus?' : 'Break time'}</h2>
               <p className="text-sm text-app-muted">Name your session or tap one of your habits.</p>

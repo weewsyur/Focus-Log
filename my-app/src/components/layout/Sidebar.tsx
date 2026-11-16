@@ -11,7 +11,7 @@ const ITEMS = [
 export function Sidebar({ active, onSignOut }: { active: Page; onSignOut: () => void }) {
   const item = 'inline-flex items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors';
   return (
-    <aside className="flex flex-wrap items-center gap-1 bg-app-blue-deep p-3 text-app-white md:min-h-screen md:w-52 md:flex-col md:items-stretch md:p-4">
+    <aside className="space-sidebar flex flex-wrap items-center gap-1 p-3 text-app-white md:min-h-screen md:w-52 md:flex-col md:items-stretch md:p-4">
       <div className="mr-2 flex items-center gap-2 font-bold md:mb-5">
         <img src="/logo.png" alt="" className="h-8 w-8 rounded-lg" />
         <span>Focus Log</span>

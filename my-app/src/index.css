@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Quicksand', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: var(--theme-font-sans);
 
   --color-app-navy: #0B2F63;
   --color-app-blue-deep: #1255A8;
@@ -24,8 +24,306 @@
   --color-app-danger-border: #FCA5A5;
 }
 
+:root {
+  --theme-font-sans: 'Quicksand', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --theme-page-bg: var(--color-app-primary);
+  --theme-shell-background: var(--color-app-primary);
+  --theme-panel-background: var(--color-app-primary);
+  --theme-sidebar-background: var(--color-app-blue-deep);
+  --theme-card-background: var(--color-app-white);
+  --theme-card-shadow: none;
+  --theme-card-shadow-hover: none;
+  --theme-overlay: rgb(11 47 99 / 40%);
+  --theme-text-on-primary: var(--color-app-white);
+  --theme-accent-text: var(--color-app-primary);
+  --theme-success-text: var(--color-app-success);
+  --theme-focus-color: var(--color-app-primary);
+  --theme-scrollbar-track: var(--color-app-surface);
+  --theme-scrollbar-thumb: var(--color-app-border-strong);
+}
+
+html[data-theme="classic"] {
+  color-scheme: light;
+}
+
+html[data-theme="interstellar"] {
+  color-scheme: dark;
+
+  --color-app-navy: #EAF3FF;
+  --color-app-blue-deep: #071323;
+  --color-app-success-dark: #65DFA2;
+  --color-app-primary: #1C5C91;
+  --color-app-success: #13734D;
+  --color-app-slate: #D0DDED;
+  --color-app-muted: #A7B8CF;
+  --color-app-border-strong: #465A72;
+  --color-app-blue-soft: #22364D;
+  --color-app-border: #2C4058;
+  --color-app-blue-pale: #172A40;
+  --color-app-surface: #111E30;
+  --color-app-highlight: #49331D;
+  --color-app-white: #F5F8FF;
+  --color-app-danger: #FF9DAA;
+  --color-app-danger-soft: #401F2B;
+  --color-app-danger-border: #7B3B4C;
+
+  --theme-page-bg: #050A14;
+  --theme-shell-background: linear-gradient(135deg, rgb(3 8 19 / 84%), rgb(7 22 42 / 69%));
+  --theme-panel-background: linear-gradient(135deg, rgb(3 8 19 / 91%), rgb(7 26 49 / 85%));
+  --theme-sidebar-background: rgb(5 14 29 / 92%);
+  --theme-card-background: #111E30;
+  --theme-card-shadow: 0 12px 32px rgb(0 0 0 / 24%);
+  --theme-card-shadow-hover: 0 16px 38px rgb(0 0 0 / 35%);
+  --theme-overlay: rgb(1 5 12 / 76%);
+  --theme-text-on-primary: #F5F8FF;
+  --theme-accent-text: #8DC8FF;
+  --theme-success-text: #59DCA3;
+  --theme-focus-color: #FFAD63;
+  --theme-scrollbar-track: #0B1625;
+  --theme-scrollbar-thumb: #425975;
+
+  --space-base: #050A14;
+  --space-nebula: #071629;
+  --space-void: #000000;
+  --space-core-edge: #02050B;
+  --space-shadow-rgb: 0, 0, 0;
+  --space-blue-rgb: 73, 158, 255;
+  --space-amber-rgb: 255, 154, 69;
+  --space-amber: #FF9A45;
+  --space-amber-light: #FFF0C7;
+  --space-amber-deep: #FF8A32;
+  --space-blue: #409AFF;
+  --space-star-white: #FFFFFF;
+  --space-star-blue: #D7EDFF;
+  --space-star-cool: #9CCFFF;
+  --space-star-soft: #B8DCFF;
+}
+
 @layer base {
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
   body {
     @apply font-sans antialiased;
+    background: var(--theme-page-bg);
+    transition: background-color 220ms ease;
   }
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+}
+
+.bg-app-white {
+  background-color: var(--theme-card-background);
+}
+
+.text-app-white {
+  color: var(--theme-text-on-primary);
+}
+
+.text-app-primary {
+  color: var(--theme-accent-text);
+}
+
+.text-app-success {
+  color: var(--theme-success-text);
+}
+
+.space-shell {
+  color: var(--theme-text-on-primary);
+  background: var(--theme-shell-background);
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+.space-panel {
+  background: var(--theme-panel-background);
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+.space-sidebar {
+  background: var(--theme-sidebar-background);
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+.space-card,
+.theme-dialog,
+input,
+select,
+textarea {
+  transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.theme-dialog::backdrop {
+  background: var(--theme-overlay);
+}
+
+.wormhole-fallback {
+  display: grid;
+  min-height: 14rem;
+  place-content: center;
+  justify-items: center;
+  gap: .75rem;
+  color: var(--theme-text-on-primary);
+  text-align: center;
+}
+
+.wormhole-fallback--screen {
+  min-height: 100vh;
+}
+
+.wormhole-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid var(--color-app-blue-soft);
+  border-top-color: var(--theme-accent-text);
+  border-radius: 50%;
+}
+
+.theme-option {
+  display: block;
+  cursor: pointer;
+}
+
+.theme-option-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.theme-option-card {
+  display: flex;
+  min-height: 6rem;
+  align-items: center;
+  gap: .75rem;
+  border: 1px solid var(--color-app-border);
+  border-radius: .75rem;
+  padding: .75rem;
+  color: var(--color-app-navy);
+  background: var(--theme-card-background);
+  transition: border-color 180ms ease, box-shadow 180ms ease, background-color 220ms ease, color 220ms ease;
+}
+
+.theme-option-input:checked + .theme-option-card {
+  border-color: var(--theme-accent-text);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--theme-accent-text) 28%, transparent);
+}
+
+.theme-option-input:focus-visible + .theme-option-card {
+  outline: 2px solid var(--theme-focus-color);
+  outline-offset: 3px;
+}
+
+.theme-preview {
+  display: flex;
+  width: 6rem;
+  height: 4rem;
+  flex: 0 0 auto;
+  gap: .35rem;
+  overflow: hidden;
+  border-radius: .5rem;
+  padding: .4rem;
+  background: var(--preview-background);
+}
+
+.theme-preview--classic {
+  --preview-background: #2180DB;
+  --preview-sidebar: #1255A8;
+  --preview-surface: #FFFFFF;
+  --preview-heading: #0B2F63;
+  --preview-line: #C9D9EA;
+  --preview-accent: #32CC59;
+}
+
+.theme-preview--interstellar {
+  --preview-background: #050A14;
+  --preview-sidebar: #0D1A2C;
+  --preview-surface: #111E30;
+  --preview-heading: #EAF3FF;
+  --preview-line: #506782;
+  --preview-accent: #FF9A45;
+}
+
+.theme-preview-sidebar {
+  width: .75rem;
+  border-radius: .2rem;
+  background: var(--preview-sidebar);
+}
+
+.theme-preview-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: .35rem;
+  border-radius: .2rem;
+  padding: .35rem;
+  background: var(--preview-surface);
+}
+
+.theme-preview-heading,
+.theme-preview-line,
+.theme-preview-accent {
+  display: block;
+  height: .25rem;
+  border-radius: 1rem;
+}
+
+.theme-preview-heading {
+  width: 72%;
+  background: var(--preview-heading);
+}
+
+.theme-preview-line {
+  width: 100%;
+  background: var(--preview-line);
+}
+
+.theme-preview-accent {
+  width: 48%;
+  background: var(--preview-accent);
+}
+
+.theme-option-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: .2rem;
+}
+
+.theme-option-check {
+  align-self: flex-start;
+  color: var(--color-app-navy);
+  font-size: .7rem;
+  font-weight: 700;
+}
+
+html[data-theme="interstellar"] {
+  scrollbar-color: var(--theme-scrollbar-thumb) var(--theme-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+html[data-theme="interstellar"]::-webkit-scrollbar {
+  width: .7rem;
+  height: .7rem;
+}
+
+html[data-theme="interstellar"]::-webkit-scrollbar-track {
+  background: var(--theme-scrollbar-track);
+}
+
+html[data-theme="interstellar"]::-webkit-scrollbar-thumb {
+  border: 2px solid var(--theme-scrollbar-track);
+  border-radius: 1rem;
+  background: var(--theme-scrollbar-thumb);
 }

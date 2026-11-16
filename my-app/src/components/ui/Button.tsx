@@ -15,7 +15,7 @@ export function Button({ variant = 'primary', size = 'md', className = '', type 
   const sizing = size === 'sm' ? 'px-3 py-1 text-xs' : 'px-6 py-2.5 text-sm';
   return (
     <button type={type} {...rest}
-      className={`inline-flex items-center justify-center gap-2 rounded-full font-bold transition disabled:cursor-not-allowed disabled:opacity-50 ${sizing} ${VARIANTS[variant]} ${className}`}>
+      className={`motion-button inline-flex items-center justify-center gap-2 rounded-full font-bold transition disabled:cursor-not-allowed disabled:opacity-50 ${sizing} ${VARIANTS[variant]} ${className}`}>
       {icon}
       {children}
     </button>

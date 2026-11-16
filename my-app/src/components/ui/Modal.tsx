@@ -23,7 +23,7 @@ export function Modal({ title, onClose, children }: ModalProps) {
       ref={dialogRef}
       aria-labelledby={titleId}
       onCancel={(event) => { event.preventDefault(); onClose(); }}
-      className="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl border border-app-border bg-app-white p-0 text-app-navy shadow-lg shadow-app-black/10 backdrop:bg-app-navy/40"
+      className="theme-dialog m-auto w-[calc(100%-2rem)] max-w-md rounded-xl border border-app-border bg-app-white p-0 text-app-navy shadow-lg shadow-app-black/10"
     >
       <div className="flex items-center justify-between gap-4 border-b border-app-border px-5 py-4">
         <h2 id={titleId} className="text-base font-bold">{title}</h2>

@@ -1,9 +1,26 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="classic">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Set the page canvas color before app styles load to prevent a flash on refresh. -->
+    <style>
+      html { --theme-page-bg: #2180db; background: var(--theme-page-bg); }
+      html[data-theme="interstellar"] { --theme-page-bg: #050a14; }
+    </style>
+    <script>
+      (() => {
+        let theme = 'classic';
+        try {
+          theme = localStorage.getItem('focus-log-theme') === 'interstellar' ? 'interstellar' : 'classic';
+        } catch (error) {
+          console.warn('Could not read the saved theme preference.', error);
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
     <title>Focus Log</title>
   </head>
   <body>

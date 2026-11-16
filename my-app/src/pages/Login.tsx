@@ -86,7 +86,7 @@ export function Login() {
 
   return (
     <div className="grid min-h-screen text-app-navy md:grid-cols-2">
-      <div className="flex flex-col justify-between gap-10 bg-app-primary p-8 text-app-white md:p-14">
+      <div className="space-panel flex flex-col justify-between gap-10 p-8 text-app-white md:p-14">
         <div className="flex items-center gap-2 font-bold">
           <img src="/logo.png" alt="" className="h-10 w-10 rounded-xl" />
           <span>Focus Log</span>

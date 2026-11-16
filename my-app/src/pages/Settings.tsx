@@ -12,6 +12,7 @@ import { useToast } from '../hooks/useToast';
 import { initials } from '../lib/utils';
 import { Pencil, Repeat, Save, Timer, UserRound } from 'lucide-react';
 import { ConfirmationActions } from '../components/ui/Confirmation';
+import { ThemeSelector } from '../components/settings/ThemeSelector';
 
 export function Settings() {
   const { profile, updateProfile } = useAuth();
@@ -56,6 +57,7 @@ export function Settings() {
   };
   return (
     <AppLayout active="settings" title="Profile & settings">
+      <ThemeSelector />
       <Card className="mb-4">
         <div className="flex items-center gap-4">
           <span className="grid h-14 w-14 place-items-center rounded-full bg-app-primary text-lg font-bold text-app-white">{initials(profile?.displayName ?? '')}</span>
