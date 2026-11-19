@@ -173,7 +173,7 @@ html[data-theme="interstellar"] .focus-clock.is-running::before {
   animation: gravity-orbit 32s linear infinite;
 }
 
-html[data-theme="interstellar"] .time-flow-number {
+html[data-theme="interstellar"] .time-flow-number--animated {
   display: inline-block;
   animation: time-flow-number 240ms ease-out both;
 }

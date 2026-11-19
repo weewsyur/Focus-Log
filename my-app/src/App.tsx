@@ -14,6 +14,7 @@ const Dashboard = lazy(() => import('./pages/Dashboard').then(({ Dashboard }) =>
 const Focus = lazy(() => import('./pages/Focus').then(({ Focus }) => ({ default: Focus })));
 const Habits = lazy(() => import('./pages/Habits').then(({ Habits }) => ({ default: Habits })));
 const Analytics = lazy(() => import('./pages/Analytics').then(({ Analytics }) => ({ default: Analytics })));
+const Templates = lazy(() => import('./pages/Templates').then(({ Templates }) => ({ default: Templates })));
 const Settings = lazy(() => import('./pages/Settings').then(({ Settings }) => ({ default: Settings })));
 const SessionComplete = lazy(() => import('./pages/SessionComplete').then(({ SessionComplete }) => ({ default: SessionComplete })));
 
@@ -31,6 +32,7 @@ function Screens() {
       case 'focus': return <Focus />;
       case 'habits': return <Habits />;
       case 'analytics': return <Analytics />;
+      case 'templates': return <Templates />;
       case 'settings': return <Settings />;
       case 'complete': return <SessionComplete />;
       default: return <Dashboard />;

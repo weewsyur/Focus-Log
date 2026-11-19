@@ -1,4 +1,4 @@
-export type Page = 'dashboard' | 'focus' | 'habits' | 'analytics' | 'settings' | 'complete';
+export type Page = 'dashboard' | 'focus' | 'habits' | 'analytics' | 'templates' | 'settings' | 'complete';
 export type TimerMode = 'focus' | 'break';
 export type TimerStatus = 'idle' | 'running' | 'paused';
 
@@ -36,3 +36,14 @@ export interface HabitWithStatus extends Habit { doneToday: boolean; streak: num
 export interface FocusSession { id: string; subject: string; durationMin: number; completedAt: string }
 export interface NewFocusSession { subject: string; durationMin: number }
 export interface DailyPoint { date: string; label: string; minutes: number }
+export interface TemplateConfig { subject: string; focusMin: number; breakMin: number }
+export interface FocusTemplate {
+  id: string;
+  userId: string | null;
+  name: string;
+  description: string;
+  isPreset: boolean;
+  config: TemplateConfig;
+  createdAt: string;
+  updatedAt: string;
+}

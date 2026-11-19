@@ -13,14 +13,14 @@ export function FocusTimer({ remainingMs, totalMs, variant = 'large', label, run
           <circle cx="60" cy="60" r="52" fill="none" stroke="var(--color-app-success)" strokeWidth="9" strokeLinecap="round"
             strokeDasharray={2 * Math.PI * 52} strokeDashoffset={2 * Math.PI * 52 * (1 - progress)} />
         </svg>
-        <span className="absolute inset-0 grid place-items-center text-3xl font-bold"><TimeFlowNumber value={formatClock(remainingMs)} /></span>
+        <span className="absolute inset-0 grid place-items-center text-3xl font-bold"><TimeFlowNumber value={formatClock(remainingMs)} animate={false} /></span>
       </div>
     );
   }
   return (
     <div className={`focus-clock text-center ${running ? 'is-running' : ''}`} role="timer" aria-label={label}>
       {label && <p className="text-xs uppercase tracking-wider text-app-muted">{label}</p>}
-      <p className="my-6 text-[clamp(64px,13vw,128px)] font-bold leading-none tabular-nums"><TimeFlowNumber value={formatClock(remainingMs)} /></p>
+      <p className="my-6 text-[clamp(64px,13vw,128px)] font-bold leading-none tabular-nums"><TimeFlowNumber value={formatClock(remainingMs)} animate={false} /></p>
     </div>
   );
 }

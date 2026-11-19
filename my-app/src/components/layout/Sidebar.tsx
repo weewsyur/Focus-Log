@@ -1,10 +1,11 @@
 import { navigate } from '../../hooks/useRoute';
 import type { Page } from '../../types';
-import { ChartNoAxesCombined, House, LogOut, Repeat, Settings, Timer } from 'lucide-react';
+import { ChartNoAxesCombined, House, Layers, LogOut, Repeat, Settings, Timer } from 'lucide-react';
 
 const ITEMS = [
   { page: 'dashboard', label: 'Home', icon: House }, { page: 'focus', label: 'Focus', icon: Timer },
   { page: 'habits', label: 'Habits', icon: Repeat }, { page: 'analytics', label: 'Analytics', icon: ChartNoAxesCombined },
+  { page: 'templates', label: 'Templates', icon: Layers },
   { page: 'settings', label: 'Settings', icon: Settings },
 ] satisfies { page: Page; label: string; icon: typeof House }[];
 

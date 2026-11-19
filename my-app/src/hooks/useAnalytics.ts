@@ -3,9 +3,11 @@ import { useAuth } from './useAuthContext';
 import { focusSessionService } from '../services/focusSessionService';
 import { habitService } from '../services/habitService';
 import type { DailyPoint, FocusSession, HabitLog } from '../types';
-import { computeBestStreak, computeStreak, dateKey, errMsg, lastNDays } from '../lib/utils';
+import { computeBestStreak, computeStreak, dateKey, daysBetween, errMsg, lastNDays } from '../lib/utils';
 
-export function useAnalytics(rangeDays: 7 | 30 = 7) {
+export type AnalyticsRange = 7 | 30 | { startDate: string; endDate: string };
+
+export function useAnalytics(range: AnalyticsRange = 7) {
   const { user } = useAuth();
   const userId = user?.id;
   const [sessions, setSessions] = useState<FocusSession[]>([]);
@@ -28,23 +30,26 @@ export function useAnalytics(rangeDays: 7 | 30 = 7) {
   }, [userId]);
 
   const data = useMemo(() => {
-    const days = lastNDays(rangeDays);
+    const days = typeof range === 'number' ? lastNDays(range) : daysBetween(range.startDate, range.endDate);
     const keys = days.map((d) => dateKey(d));
     const keySet = new Set(keys);
     const dayOf = (s: FocusSession) => dateKey(new Date(s.completedAt));
     const byDay = new Map<string, number>();
-    sessions.forEach((s) => byDay.set(dayOf(s), (byDay.get(dayOf(s)) ?? 0) + s.durationMin));
+    sessions.filter((s) => keySet.has(dayOf(s))).forEach((s) => byDay.set(dayOf(s), (byDay.get(dayOf(s)) ?? 0) + s.durationMin));
 
     const inRange = sessions.filter((s) => keySet.has(dayOf(s)));
     const daily: DailyPoint[] = days.map((d) => ({
       date: dateKey(d),
-      label: rangeDays <= 7 ? d.toLocaleDateString('en', { weekday: 'short' }) : String(d.getDate()),
+      label: days.length <= 7 ? d.toLocaleDateString('en', { weekday: 'short' }) : String(d.getDate()),
       minutes: byDay.get(dateKey(d)) ?? 0,
     }));
-    const habitsDone = logs.filter((l) => keySet.has(l.date)).length;
+    const inRangeLogs = logs.filter((l) => keySet.has(l.date));
+    const habitsDone = inRangeLogs.length;
     const habitsPossible = habitCount * keys.length;
 
     const active = new Set<string>([...logs.map((l) => l.date), ...sessions.map(dayOf)]);
+    const rangeActive = new Set<string>([...inRangeLogs.map((l) => l.date), ...inRange.map(dayOf)]);
+    const selectedRangeStreak = computeBestStreak(rangeActive);
     const today = dateKey();
     const todaySessions = sessions.filter((s) => dayOf(s) === today);
     const all = sessions.map((s) => s.durationMin);
@@ -55,16 +60,17 @@ export function useAnalytics(rangeDays: 7 | 30 = 7) {
       completionRate: habitsPossible ? Math.round((habitsDone / habitsPossible) * 100) : 0,
       daily,
       bestDayMin: Math.max(0, ...daily.map((d) => d.minutes)),
-      recent: sessions.slice(0, 6),
+      recent: inRange.slice(0, 6),
       activeDates: active,
       streak: computeStreak(active),
       bestStreak: computeBestStreak(active),
+      rangeStreak: selectedRangeStreak,
       todayMin: todaySessions.reduce((a, s) => a + s.durationMin, 0),
       todayCount: todaySessions.length,
       bestSessionMin: Math.max(0, ...all),
       meanSessionMin: all.length ? Math.round(all.reduce((a, b) => a + b, 0) / all.length) : 0,
     };
-  }, [sessions, logs, habitCount, rangeDays]);
+  }, [sessions, logs, habitCount, range]);
 
   return { ...data, loading, error };
 }

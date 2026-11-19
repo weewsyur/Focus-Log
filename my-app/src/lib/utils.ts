@@ -44,6 +44,18 @@ export function lastNDays(n: number): Date[] {
     return d;
   });
 }
+export function daysBetween(startDate: string, endDate: string): Date[] {
+  const [startYear, startMonth, startDay] = startDate.split('-').map(Number);
+  const [endYear, endMonth, endDay] = endDate.split('-').map(Number);
+  const start = new Date(startYear, startMonth - 1, startDay);
+  const end = new Date(endYear, endMonth - 1, endDay);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(startDate) || !/^\d{4}-\d{2}-\d{2}$/.test(endDate)
+    || !Number.isFinite(start.getTime()) || !Number.isFinite(end.getTime())
+    || dateKey(start) !== startDate || dateKey(end) !== endDate || end < start) return [];
+  const days: Date[] = [];
+  for (const day = new Date(start); day <= end; day.setDate(day.getDate() + 1)) days.push(new Date(day));
+  return days;
+}
 /** Consecutive active days ending today (or yesterday if today has no activity yet). */
 export function computeStreak(active: Set<string>): number {
   const d = new Date();

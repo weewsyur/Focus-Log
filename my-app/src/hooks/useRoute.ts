@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Page } from '../types';
 
-const PAGES: Page[] = ['dashboard', 'focus', 'habits', 'analytics', 'settings', 'complete'];
+const PAGES: Page[] = ['dashboard', 'focus', 'habits', 'analytics', 'templates', 'settings', 'complete'];
 function read(): Page {
   const h = window.location.hash.replace(/^#\/?/, '') as Page;
   return PAGES.includes(h) ? h : 'dashboard';

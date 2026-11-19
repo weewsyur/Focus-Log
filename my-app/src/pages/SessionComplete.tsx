@@ -40,10 +40,14 @@ export function SessionComplete() {
           <p className="my-5 text-7xl font-bold leading-none tabular-nums">{String(displayedDuration).padStart(2, '0')}:00</p>
           {t.saveError
             ? <p role="alert" className="mb-4 text-sm text-app-danger">We couldn't save this session: {t.saveError}</p>
-            : <p className="mb-5">{s ? `${s.subject} session saved.` : `${displayedSubject} is ready to save.`} Take {t.breakMin} minutes, then go again.</p>}
+            : <p className="mb-5">{s ? `${s.subject} session saved.` : `${displayedSubject} is ready to save.`} {t.breakMin > 0 ? `Take ${t.breakMin} minutes, then go again.` : 'No break scheduled.'}</p>}
           <div className="flex flex-wrap gap-2">
-            <Button icon={<Coffee size={16} strokeWidth={2} aria-hidden="true" />} onClick={() => { t.startBreak(); navigate('focus'); }}>Start {t.breakMin} min break</Button>
-            <Button variant="ghost" icon={<SkipForward size={15} strokeWidth={2} aria-hidden="true" />} onClick={() => { t.skipBreak(); navigate('focus'); }}>Skip break</Button>
+            {t.breakMin > 0 ? (
+              <>
+                <Button icon={<Coffee size={16} strokeWidth={2} aria-hidden="true" />} onClick={() => { t.startBreak(); navigate('focus'); }}>Start {t.breakMin} min break</Button>
+                <Button variant="ghost" icon={<SkipForward size={15} strokeWidth={2} aria-hidden="true" />} onClick={() => { t.skipBreak(); navigate('focus'); }}>Skip break</Button>
+              </>
+            ) : <Button icon={<Timer size={16} strokeWidth={2} aria-hidden="true" />} onClick={() => navigate('focus')}>Start another session</Button>}
           </div>
           {stats.loading ? <p className="mt-4 text-sm text-app-muted">Loading statistics…</p> : stats.error ? <p role="alert" className="mt-4 text-sm text-app-danger">{stats.error}</p> : null}
         </Card>

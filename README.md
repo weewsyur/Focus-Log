@@ -9,6 +9,7 @@ sessions and streaks from the dashboard.
 - Focus and break timers, with adjustable durations
 - Daily habits, completion tracking, and streaks
 - Session history, weekly and monthly analytics
+- Reusable preset and personal focus templates
 - Profile settings for your name and timer defaults
 - Supabase-backed accounts and data, with a browser-storage fallback for trying
   the app without a Supabase project
@@ -74,3 +75,38 @@ npm run lint    # Run Oxlint
 npm run build   # Type-check and create a production build
 npm run preview # Serve the production build locally
 ```
+
+## Templates
+
+Apply `my-app/supabase/migrations/20261106000000_templates.sql` followed by
+`my-app/supabase/migrations/20261107000000_seed_focus_templates.sql`. Templates
+are protected by row-level security. The config intentionally matches the
+current focus form only: `subject`, `focusMin`, and `breakMin`; the form has no
+cycle, long-break, or category inputs. A zero-minute break is supported for
+the no-break presets.
+
+Verify the seed in the Supabase SQL editor:
+
+```sql
+SELECT name FROM public.templates WHERE is_preset = TRUE ORDER BY name;
+-- Expected: 10 rows
+```
+
+Manual checks:
+
+1. As user A, save a template from Focus, then edit and use it; verify the
+   subject, focus length, and break length prefill and remain editable.
+2. Duplicate a preset and a custom template; confirm both copies are editable
+   custom templates and repeated duplicates get a unique name.
+3. Delete a template after saving a session; confirm the session stays in
+   history. Edit a template and verify past sessions do not change.
+4. As user B, confirm user A's custom templates are not listed or accessible.
+   Attempt to update or delete a preset and verify it is rejected.
+5. Create names differing only by case and verify the duplicate is rejected.
+   Try saving more than 50 custom templates and verify the limit message.
+
+For rollback, run
+`my-app/supabase/rollback/20261107000000_seed_focus_templates.sql` first; it
+deletes only the ten named preset rows. The schema rollback at
+`my-app/supabase/rollback/20261106000000_templates.sql` drops the templates
+table and all custom templates, so use it only when that data loss is intended.

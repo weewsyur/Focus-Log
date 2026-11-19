@@ -62,7 +62,7 @@ export function useFocusTimer({ defaultFocusMin, defaultBreakMin, onComplete }: 
   }, [breakMin]);
   const skipBreak = useCallback(() => { setMode('focus'); setStatus('idle'); setRemainingMs(focusMin * 60000); }, [focusMin]);
   const setDurations = useCallback((f: number, b: number) => {
-    const nf = clamp(f, 1, 180), nb = clamp(b, 1, 60);
+    const nf = clamp(f, 1, 180), nb = clamp(b, 0, 60);
     setFocusMin(nf); setBreakMin(nb);
     if (status === 'idle') setRemainingMs((mode === 'focus' ? nf : nb) * 60000);
   }, [status, mode]);
