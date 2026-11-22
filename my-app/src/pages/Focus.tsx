@@ -87,7 +87,7 @@ export function Focus() {
           <TimerControls status={t.status} mode={t.mode} canReset={!idle || t.remainingMs !== t.totalMs}
             onStart={t.start} onPause={t.pause} onReset={t.reset} onSkipBreak={t.skipBreak} />
           <div className="mt-10 flex justify-around text-xs uppercase tracking-wider text-app-muted">
-            <span>Mean {stats.meanSessionMin} min</span><span>Today {stats.todayMin} min</span><span>Best {stats.bestSessionMin} min</span>
+            <span>Average {stats.meanSessionMin} min</span><span>Today {stats.todayMin} min</span><span>Best {stats.bestSessionMin} min</span>
           </div>
         </Card>
         <Card>
